@@ -80,6 +80,81 @@ GraphicalModel parseGraphicalModel(const std::string& filename) {
             } else {
                 gm.type = GraphType::UNDIRECTED;
             }
+        } else if (command == "CPT") {
+            // Parse CPT: CPT <node_id> [parent_states...] <prob_state0> <prob_state1> ...
+            // Format examples:
+            //   CPT 0 0.8 0.2                    (root node, no parents)
+            //   CPT 2 0 0 0.99 0.01             (node 2 with parents in state 0,0)
+            //   CPT 2 0 1 0.9 0.1               (node 2 with parents in state 0,1)
+            //   CPT 2 1 0 0.8 0.2               (node 2 with parents in state 1,0)
+            //   CPT 2 1 1 0.0 1.0               (node 2 with parents in state 1,1)
+            
+            int node_id;
+            if (!(iss >> node_id)) {
+                std::cerr << "Warning: Invalid CPT command, missing node_id\n";
+                continue;
+            }
+            
+            Node* node = gm.getNode(node_id);
+            if (!node) {
+                std::cerr << "Warning: CPT specified for non-existent node " << node_id << "\n";
+                continue;
+            }
+            
+            // Get parents of this node
+            std::vector<int> parents = gm.getParents(node_id);
+            int num_parents = parents.size();
+            
+            // Read all remaining values
+            std::vector<double> values;
+            double val;
+            while (iss >> val) {
+                values.push_back(val);
+            }
+            
+            // Determine format: if we have exactly num_states values, it's a root node CPT
+            // Otherwise, we need to parse parent states + probabilities
+            if (num_parents == 0) {
+                // Root node: just probabilities
+                if (values.size() != (size_t)node->num_states) {
+                    std::cerr << "Warning: CPT for root node " << node_id 
+                              << " should have " << node->num_states << " values, got " 
+                              << values.size() << "\n";
+                    continue;
+                }
+                std::map<std::vector<int>, std::vector<double>> cpt_table;
+                cpt_table[std::vector<int>()] = values;  // Empty parent state vector
+                gm.setCPT(node_id, cpt_table);
+            } else {
+                // Node with parents: format is [parent_states...] [probabilities...]
+                // Each entry has num_parents parent states + num_states probabilities
+                int entry_size = num_parents + node->num_states;
+                if (values.size() % entry_size != 0) {
+                    std::cerr << "Warning: CPT for node " << node_id 
+                              << " has incorrect number of values. Expected multiple of " 
+                              << entry_size << ", got " << values.size() << "\n";
+                    continue;
+                }
+                
+                std::map<std::vector<int>, std::vector<double>> cpt_table;
+                for (size_t i = 0; i < values.size(); i += entry_size) {
+                    std::vector<int> parent_states;
+                    std::vector<double> probs;
+                    
+                    // Read parent states
+                    for (int j = 0; j < num_parents; j++) {
+                        parent_states.push_back((int)values[i + j]);
+                    }
+                    
+                    // Read probabilities
+                    for (int j = 0; j < node->num_states; j++) {
+                        probs.push_back(values[i + num_parents + j]);
+                    }
+                    
+                    cpt_table[parent_states] = probs;
+                }
+                gm.setCPT(node_id, cpt_table);
+            }
         }
     }
     

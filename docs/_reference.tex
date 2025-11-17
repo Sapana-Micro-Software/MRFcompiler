@@ -240,6 +240,69 @@ EDGE <from> <to> [directed]
     \item \texttt{[directed]}: Optional flag (only relevant for undirected graphs, ignored for directed)
 \end{itemize}
 
+\subsection{Conditional Probability Tables (CPTs)}
+
+For Bayesian Networks (directed graphs), you can specify Conditional Probability Tables (CPTs) for each node. CPTs define the probability distribution of a node given its parents.
+
+\subsubsection{CPT Syntax}
+
+The CPT command syntax is:
+
+\begin{verbatim}
+CPT <node_id> [parent_states...] <prob_state0> <prob_state1> ...
+\end{verbatim}
+
+\begin{itemize}
+    \item \texttt{<node_id>}: The node ID for which the CPT is defined
+    \item \texttt{[parent_states...]}: For nodes with parents, specify the parent state combination (one integer per parent, in order of parent node IDs)
+    \item \texttt{<prob_state0> <prob_state1> ...}: Probability values for each state of the node (must sum to 1.0 for each parent combination)
+\end{itemize}
+
+\subsubsection{Root Node CPTs}
+
+For root nodes (nodes with no parents), simply specify the probability distribution:
+
+\begin{verbatim}
+CPT 0 0.8 0.2
+\end{verbatim}
+
+This means: P(Node0=0) = 0.8, P(Node0=1) = 0.2
+
+\subsubsection{Node with Parents CPTs}
+
+For nodes with parents, you must specify a CPT entry for each parent state combination. Each line specifies one parent combination:
+
+\begin{verbatim}
+CPT 2 0 0 0.99 0.01    # P(Node2=0|Parent1=0,Parent2=0)=0.99, P(Node2=1|...)=0.01
+CPT 2 0 1 0.9 0.1     # P(Node2=0|Parent1=0,Parent2=1)=0.9, P(Node2=1|...)=0.1
+CPT 2 1 0 0.8 0.2     # P(Node2=0|Parent1=1,Parent2=0)=0.8, P(Node2=1|...)=0.2
+CPT 2 1 1 0.0 1.0     # P(Node2=0|Parent1=1,Parent2=1)=0.0, P(Node2=1|...)=1.0
+\end{verbatim}
+
+The parent states are specified in the order of parent node IDs (as they appear in EDGE declarations).
+
+\subsubsection{CPT Example: Bayesian Network}
+
+A complete example of a Bayesian Network with CPTs:
+
+\begin{verbatim}
+TYPE directed
+NODE 0 Rain 2
+NODE 1 Sprinkler 2
+NODE 2 WetGrass 2
+EDGE 0 2 directed
+EDGE 1 2 directed
+# Root node: P(Rain=0)=0.8, P(Rain=1)=0.2
+CPT 0 0.8 0.2
+# Root node: P(Sprinkler=0)=0.6, P(Sprinkler=1)=0.4
+CPT 1 0.6 0.4
+# WetGrass depends on Rain and Sprinkler
+CPT 2 0 0 0.99 0.01  # P(WetGrass|Rain=0,Sprinkler=0)
+CPT 2 0 1 0.9 0.1    # P(WetGrass|Rain=0,Sprinkler=1)
+CPT 2 1 0 0.8 0.2    # P(WetGrass|Rain=1,Sprinkler=0)
+CPT 2 1 1 0.0 1.0    # P(WetGrass|Rain=1,Sprinkler=1)
+\end{verbatim}
+
 \subsection{Complete Example}
 
 \begin{verbatim}

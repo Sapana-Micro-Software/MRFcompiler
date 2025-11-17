@@ -1,0 +1,19 @@
+TYPE directed
+NODE 0 Rain 2
+NODE 1 Sprinkler 2
+NODE 2 WetGrass 2
+EDGE 0 2 directed
+EDGE 1 2 directed
+# CPT for root node Rain: P(Rain=0)=0.8, P(Rain=1)=0.2
+CPT 0 0.8 0.2
+# CPT for root node Sprinkler: P(Sprinkler=0)=0.6, P(Sprinkler=1)=0.4
+CPT 1 0.6 0.4
+# CPT for WetGrass given Rain and Sprinkler
+# P(WetGrass=0|Rain=0,Sprinkler=0)=0.99, P(WetGrass=1|Rain=0,Sprinkler=0)=0.01
+CPT 2 0 0 0.99 0.01
+# P(WetGrass=0|Rain=0,Sprinkler=1)=0.9, P(WetGrass=1|Rain=0,Sprinkler=1)=0.1
+CPT 2 0 1 0.9 0.1
+# P(WetGrass=0|Rain=1,Sprinkler=0)=0.8, P(WetGrass=1|Rain=1,Sprinkler=0)=0.2
+CPT 2 1 0 0.8 0.2
+# P(WetGrass=0|Rain=1,Sprinkler=1)=0.0, P(WetGrass=1|Rain=1,Sprinkler=1)=1.0
+CPT 2 1 1 0.0 1.0

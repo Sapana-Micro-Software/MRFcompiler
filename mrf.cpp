@@ -158,6 +158,97 @@ std::vector<Clique> findMaximalCliques(const GraphicalModel& gm) {
     return cliques;
 }
 
+// Helper function to convert CPT to clique potential
+std::vector<double> convertCPTToPotential(const std::vector<int>& clique_nodes, 
+                                         const GraphicalModel& gm) {
+    // Find which node in the clique has the CPT
+    int cpt_node_id = -1;
+    std::vector<int> parent_ids;
+    
+    for (int node_id : clique_nodes) {
+        const Node* n = gm.getNode(node_id);
+        if (n && n->has_cpt) {
+            cpt_node_id = node_id;
+            parent_ids = gm.getParents(node_id);
+            break;
+        }
+    }
+    
+    if (cpt_node_id == -1) {
+        // No CPT found, return uniform potential
+        int size = 1;
+        for (int n : clique_nodes) {
+            const Node* node_ptr = gm.getNode(n);
+            if (node_ptr) size *= node_ptr->num_states;
+        }
+        return std::vector<double>(size, 1.0);
+    }
+    
+    const Node* cpt_node = gm.getNode(cpt_node_id);
+    if (!cpt_node || !cpt_node->has_cpt) {
+        int size = 1;
+        for (int n : clique_nodes) {
+            const Node* node_ptr = gm.getNode(n);
+            if (node_ptr) size *= node_ptr->num_states;
+        }
+        return std::vector<double>(size, 1.0);
+    }
+    
+    // Build potential table from CPT
+    // The clique contains the node and its parents
+    // We need to map each state combination to the CPT value
+    
+    // Determine the order of nodes in the clique (node first, then parents)
+    std::vector<int> node_order;
+    node_order.push_back(cpt_node_id);
+    for (int parent_id : parent_ids) {
+        if (std::find(clique_nodes.begin(), clique_nodes.end(), parent_id) != clique_nodes.end()) {
+            node_order.push_back(parent_id);
+        }
+    }
+    
+    // Calculate potential table size
+    int potential_size = 1;
+    std::vector<int> node_sizes;
+    for (int n : node_order) {
+        const Node* node_ptr = gm.getNode(n);
+        if (node_ptr) {
+            node_sizes.push_back(node_ptr->num_states);
+            potential_size *= node_ptr->num_states;
+        }
+    }
+    
+    std::vector<double> potential(potential_size, 1.0);
+    
+    // Fill potential table from CPT
+    for (int i = 0; i < potential_size; i++) {
+        // Decode state combination
+        std::vector<int> states;
+        int temp = i;
+        for (int size : node_sizes) {
+            states.push_back(temp % size);
+            temp /= size;
+        }
+        
+        // Get node state (first in order)
+        int node_state = states[0];
+        
+        // Get parent states
+        std::vector<int> parent_states;
+        for (size_t j = 1; j < states.size(); j++) {
+            parent_states.push_back(states[j]);
+        }
+        
+        // Look up in CPT
+        auto cpt_it = cpt_node->cpt.find(parent_states);
+        if (cpt_it != cpt_node->cpt.end() && node_state < (int)cpt_it->second.size()) {
+            potential[i] = cpt_it->second[node_state];
+        }
+    }
+    
+    return potential;
+}
+
 // Convert Graphical Model to MRF
 MRF convertToMRF(const GraphicalModel& gm) {
     MRF mrf;
@@ -180,25 +271,51 @@ MRF convertToMRF(const GraphicalModel& gm) {
     for (const auto& clique : cliques) {
         mrf.addClique(clique.nodes);
         
-        // Set potential from original graph
-        if (clique.nodes.size() == 1) {
-            // Single node clique - use node potential
-            Node* node = gm_copy.getNode(clique.nodes[0]);
-            if (node) {
-                mrf.cliques.back().setPotential(node->potential);
+        // Check if any node in clique has CPT (for Bayesian Networks)
+        bool has_cpt = false;
+        for (int node_id : clique.nodes) {
+            const Node* node = gm.getNode(node_id);
+            if (node && node->has_cpt) {
+                has_cpt = true;
+                break;
             }
-        } else if (clique.nodes.size() == 2) {
-            // Edge clique - use edge potential
-            Edge* edge = gm_copy.getEdge(clique.nodes[0], clique.nodes[1]);
-            if (edge && !edge->potential.empty()) {
-                // Flatten 2D potential to 1D
-                std::vector<double> flat_pot;
-                for (const auto& row : edge->potential) {
-                    for (double val : row) {
-                        flat_pot.push_back(val);
+        }
+        
+        if (has_cpt && gm.type == GraphType::DIRECTED) {
+            // Convert CPT to potential
+            std::vector<double> potential = convertCPTToPotential(clique.nodes, gm);
+            mrf.cliques.back().setPotential(potential);
+        } else {
+            // Use standard potential assignment
+            if (clique.nodes.size() == 1) {
+                // Single node clique - use node potential or CPT if available
+                const Node* node = gm.getNode(clique.nodes[0]);
+                if (node) {
+                    if (node->has_cpt && !node->cpt.empty()) {
+                        // Use CPT for root node (no parents)
+                        auto cpt_it = node->cpt.find(std::vector<int>());
+                        if (cpt_it != node->cpt.end()) {
+                            mrf.cliques.back().setPotential(cpt_it->second);
+                        } else {
+                            mrf.cliques.back().setPotential(node->potential);
+                        }
+                    } else {
+                        mrf.cliques.back().setPotential(node->potential);
                     }
                 }
-                mrf.cliques.back().setPotential(flat_pot);
+            } else if (clique.nodes.size() == 2) {
+                // Edge clique - use edge potential
+                Edge* edge = gm_copy.getEdge(clique.nodes[0], clique.nodes[1]);
+                if (edge && !edge->potential.empty()) {
+                    // Flatten 2D potential to 1D
+                    std::vector<double> flat_pot;
+                    for (const auto& row : edge->potential) {
+                        for (double val : row) {
+                            flat_pot.push_back(val);
+                        }
+                    }
+                    mrf.cliques.back().setPotential(flat_pot);
+                }
             }
         }
     }

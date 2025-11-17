@@ -189,14 +189,31 @@ The MRF Compiler distinguishes itself by providing a complete, automated pipelin
 The MRF Compiler implements a multi-stage conversion pipeline:
 
 \begin{enumerate}
-    \item \textbf{Graphical Model Parsing}: Read and parse input graphical model specification
-    \item \textbf{Graph Moralization} (if directed): Convert directed graph to undirected MRF
+    \item \textbf{Graphical Model Parsing}: Read and parse input graphical model specification, including Conditional Probability Tables (CPTs) for Bayesian Networks
+    \item \textbf{Graph Moralization} (if directed): Convert directed graph to undirected MRF, preserving conditional independence relationships
+    \item \textbf{CPT to Potential Conversion}: Convert CPTs from Bayesian Networks to MRF clique potentials
     \item \textbf{Clique Finding}: Identify maximal cliques in the undirected graph
     \item \textbf{MRF Construction}: Build MRF structure with clique potentials
     \item \textbf{Ising Encoding}: Map MRF potentials to Ising Hamiltonian parameters
     \item \textbf{Quantum Circuit Generation}: Translate Ising Hamiltonian to quantum gates
     \item \textbf{Framework Export}: Generate framework-specific code
 \end{enumerate}
+
+\subsection{CPT to Potential Conversion}
+
+For Bayesian Networks, each node $X_i$ has a Conditional Probability Table (CPT) $P(X_i | \text{Pa}(X_i))$ where $\text{Pa}(X_i)$ denotes the parents of $X_i$. During moralization, we convert these CPTs to MRF clique potentials.
+
+The conversion is straightforward: for a node $X_i$ with parents $\text{Pa}(X_i)$, the CPT $P(X_i | \text{Pa}(X_i))$ becomes a clique potential $\phi(X_i, \text{Pa}(X_i))$ where:
+\[
+\phi(x_i, \text{pa}_i) = P(x_i | \text{pa}_i)
+\]
+
+This conversion preserves the joint probability distribution:
+\[
+P(X_1, \ldots, X_n) = \prod_{i=1}^{n} P(X_i | \text{Pa}(X_i)) = \frac{1}{Z} \prod_{c \in \mathcal{C}} \phi_c(X_c)
+\]
+
+where $\mathcal{C}$ is the set of cliques in the moralized graph, and $Z$ is the partition function.
 
 \subsection{Graph Moralization Algorithm}
 
