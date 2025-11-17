@@ -1,0 +1,63 @@
+% MRF Compiler Reference Manual
+% Copyright (C) 2025, Shyamal Suhana Chandra
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{longtable}
+
+\title{MRF Compiler Reference Manual}
+\author{Shyamal Suhana Chandra}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This reference manual provides complete documentation for the MRF Compiler, including command-line options, input formats, API reference, and framework-specific details.
+
+\section{Command-Line Interface}
+
+\subsection{Basic Usage}
+
+\verb|./mrf_compiler [options] [input_file] [output_file]|
+
+\subsection{Options}
+
+\begin{longtable}{|p{3cm}|p{10cm}|}
+\hline
+\textbf{Option} & \textbf{Description} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Option} & \textbf{Description} \\
+\hline
+\endhead
+\verb|-f, --framework| & Specify output framework (qasm, qiskit, cirq, pennylane, qsharp, braket, qulacs, tfq) \\
+\hline
+\verb|-a, --all| & Export to all supported frameworks \\
+\hline
+\verb|-h, --help| & Display help message \\
+\hline
+\end{longtable}
+
+\section{Input Format}
+
+\section{Output Formats}
+
+\section{API Reference}
+
+\section{Framework Details}
+
+\section{Examples}
+
+\section{Troubleshooting}
+
+\end{document}

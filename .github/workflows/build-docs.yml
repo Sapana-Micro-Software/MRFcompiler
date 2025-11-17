@@ -1,0 +1,40 @@
+name: Build Documentation
+
+on:
+  push:
+    paths:
+      - 'docs/*.tex'
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up TeX Live
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: docs/_paper.tex
+          args: -shell-escape -file-line-error -interaction=nonstopmode
+
+      - name: Compile LaTeX documents
+        run: |
+          cd docs
+          # Compile paper
+          pdflatex -interaction=nonstopmode _paper.tex || true
+          pdflatex -interaction=nonstopmode _paper.tex || true
+          
+          # Compile presentation
+          pdflatex -interaction=nonstopmode _presentation.tex || true
+          
+          # Compile reference manual
+          pdflatex -interaction=nonstopmode _reference.tex || true
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-pdfs
+          path: docs/*.pdf
+          if-no-files-found: ignore

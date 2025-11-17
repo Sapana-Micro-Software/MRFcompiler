@@ -1,0 +1,54 @@
+% MRF Compiler Research Paper
+% Copyright (C) 2025, Shyamal Suhana Chandra
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{MRF Compiler: A Framework for Converting Graphical Models to Quantum Circuits}
+\author{Shyamal Suhana Chandra}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper presents the MRF Compiler, a comprehensive framework for converting probabilistic graphical models into Markov Random Fields (MRF) and subsequently into quantum circuit representations. The compiler supports multiple quantum computing frameworks including Qiskit, Cirq, PennyLane, Q\#, AWS Braket, Qulacs, and TensorFlow Quantum. We describe the conversion pipeline, including moralization algorithms for directed graphs, clique finding techniques, and Ising Hamiltonian encoding for quantum circuit generation.
+\end{abstract}
+
+\section{Introduction}
+
+The MRF Compiler bridges the gap between classical probabilistic graphical models and quantum computing frameworks, enabling researchers and practitioners to leverage quantum algorithms for solving problems originally formulated in terms of graphical models.
+
+\section{Architecture}
+
+\subsection{Graphical Model Representation}
+The compiler accepts both directed and undirected graphical models, supporting flexible node and edge potential specifications.
+
+\subsection{MRF Conversion}
+For directed graphs, the compiler performs moralization to convert them to undirected MRFs, followed by maximal clique identification.
+
+\subsection{Quantum Circuit Generation}
+The MRF is encoded as an Ising Hamiltonian, which is then translated into quantum gates suitable for various quantum computing frameworks.
+
+\section{Methodology}
+
+\section{Implementation}
+
+\section{Results}
+
+\section{Conclusion}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}

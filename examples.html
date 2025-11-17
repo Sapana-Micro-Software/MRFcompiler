@@ -1,0 +1,117 @@
+---
+layout: default
+title: Examples
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>Examples</h1>
+    <p class="page-subtitle">Learn by example with practical MRF compiler usage</p>
+  </div>
+</div>
+
+<section class="examples-section">
+  <div class="container">
+    <div class="example-card">
+      <h2>Basic Example: Undirected Graph</h2>
+      <p>Convert a simple undirected graphical model to Qiskit circuit.</p>
+      
+      <h3>Input File (example.txt)</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">text</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>TYPE undirected
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 1 2</code></pre>
+      </div>
+
+      <h3>Command</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>./mrf_compiler -f qiskit example.txt circuit.py</code></pre>
+      </div>
+
+      <h3>Generated Output</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">python</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+
+def create_mrf_circuit():
+    qr = QuantumRegister(3, 'q')
+    cr = ClassicalRegister(3, 'c')
+    qc = QuantumCircuit(qr, cr)
+    
+    qc.h(0)
+    qc.h(1)
+    qc.h(2)
+    # ... additional gates ...
+    
+    return qc</code></pre>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h2>Export to All Frameworks</h2>
+      <p>Generate circuit code for all supported frameworks at once.</p>
+      
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>./mrf_compiler -a example.txt</code></pre>
+      </div>
+
+      <p>This generates:</p>
+      <ul>
+        <li><code>output_qasm.qasm</code> - OpenQASM format</li>
+        <li><code>output_qiskit.py</code> - Qiskit Python code</li>
+        <li><code>output_cirq.py</code> - Cirq Python code</li>
+        <li><code>output_pennylane.py</code> - PennyLane Python code</li>
+        <li><code>output_qsharp.qs</code> - Q# source code</li>
+        <li><code>output_braket.py</code> - AWS Braket Python code</li>
+        <li><code>output_qulacs.py</code> - Qulacs Python code</li>
+        <li><code>output_tfq.py</code> - TensorFlow Quantum code</li>
+      </ul>
+    </div>
+
+    <div class="example-card">
+      <h2>Directed Graph Example</h2>
+      <p>Convert a directed Bayesian network to MRF and then to quantum circuit.</p>
+      
+      <h3>Input File (bayesian.txt)</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">text</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>TYPE directed
+NODE 0 Rain 2
+NODE 1 Sprinkler 2
+NODE 2 WetGrass 2
+EDGE 0 2 directed
+EDGE 1 2 directed</code></pre>
+      </div>
+
+      <h3>Command</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code>./mrf_compiler -f cirq bayesian.txt bayesian_circuit.py</code></pre>
+      </div>
+    </div>
+  </div>
+</section>

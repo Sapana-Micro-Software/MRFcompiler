@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <a href="/">
+          <span class="brand-icon">⚛️</span>
+          <span class="brand-text">MRF Compiler</span>
+        </a>
+      </div>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/installation">Installation</a></li>
+        <li><a href="/docs">Documentation</a></li>
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="https://github.com/shyamalchandra/MRFcompiler" target="_blank">GitHub</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    {{ content }}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>MRF Compiler</h4>
+          <p>Convert graphical models to quantum circuits</p>
+        </div>
+        <div class="footer-section">
+          <h4>Links</h4>
+          <ul>
+            <li><a href="/installation">Installation</a></li>
+            <li><a href="/docs">Documentation</a></li>
+            <li><a href="/examples">Examples</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/docs/paper.pdf">Research Paper</a></li>
+            <li><a href="/docs/presentation.pdf">Presentation</a></li>
+            <li><a href="/docs/reference.pdf">Reference Manual</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://github.com/shyamalchandra/MRFcompiler" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/shyamalchandra/MRFcompiler/issues" target="_blank">Issues</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Shyamal Suhana Chandra. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

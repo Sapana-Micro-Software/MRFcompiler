@@ -1,0 +1,25 @@
+{
+  "name": "mrf-compiler-website",
+  "version": "1.0.0",
+  "description": "Website for MRF Compiler - Graphical Model to QPU Circuit Converter",
+  "scripts": {
+    "build": "tsc && jekyll build",
+    "dev": "tsc --watch & jekyll serve --watch",
+    "serve": "jekyll serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "quantum",
+    "mrf",
+    "compiler",
+    "qpu",
+    "circuit"
+  ],
+  "author": "Shyamal Suhana Chandra",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {}
+}

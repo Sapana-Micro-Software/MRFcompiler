@@ -1,0 +1,82 @@
+% MRF Compiler Beamer Presentation
+% Copyright (C) 2025, Shyamal Suhana Chandra
+
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title[MRF Compiler]{MRF Compiler}
+\subtitle{Converting Graphical Models to Quantum Circuits}
+\author{Shyamal Suhana Chandra}
+\institute{MRF Compiler Project}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Overview}
+\begin{itemize}
+\item Convert graphical models to MRF
+\item Generate quantum circuits
+\item Support for 8+ quantum frameworks
+\item Open source implementation
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Architecture}
+\begin{block}{Conversion Pipeline}
+\begin{enumerate}
+\item Parse graphical model
+\item Convert to MRF (moralization if needed)
+\item Find maximal cliques
+\item Encode as Ising Hamiltonian
+\item Generate framework-specific code
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Supported Frameworks}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{itemize}
+\item OpenQASM
+\item Qiskit
+\item Cirq
+\item PennyLane
+\end{itemize}
+\column{0.5\textwidth}
+\begin{itemize}
+\item Q\#
+\item AWS Braket
+\item Qulacs
+\item TensorFlow Quantum
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Usage Example}
+\begin{block}{Command}
+\verb|./mrf_compiler -f qiskit example.txt circuit.py|
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusion}
+\begin{itemize}
+\item Powerful tool for quantum algorithm development
+\item Easy integration with existing frameworks
+\item Active development and community support
+\end{itemize}
+\end{frame}
+
+\end{document}

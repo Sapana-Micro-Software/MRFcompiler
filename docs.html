@@ -1,0 +1,145 @@
+---
+layout: default
+title: Documentation
+---
+
+<div class="page-header">
+  <div class="container">
+    <h1>Documentation</h1>
+    <p class="page-subtitle">Complete documentation for MRF Compiler</p>
+  </div>
+</div>
+
+<section class="docs-section">
+  <div class="container">
+    <div class="docs-categories">
+      <div class="doc-category">
+        <h2>📄 Research Papers</h2>
+        <div class="doc-list">
+          <a href="/docs/paper.pdf" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>MRF Compiler: A Framework for Converting Graphical Models to Quantum Circuits</h3>
+              <p>Complete research paper describing the methodology, algorithms, and implementation details of the MRF compiler.</p>
+              <span class="doc-meta">PDF • LaTeX • 2025</span>
+            </div>
+            <div class="doc-item-icon">📥</div>
+          </a>
+          <a href="/docs/_paper.tex" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>Research Paper Source (LaTeX)</h3>
+              <p>LaTeX source file for compiling the research paper.</p>
+              <span class="doc-meta">LaTeX • Source • 2025</span>
+            </div>
+            <div class="doc-item-icon">📝</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-category">
+        <h2>📊 Presentations</h2>
+        <div class="doc-list">
+          <a href="/docs/presentation.pdf" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>MRF Compiler Presentation</h3>
+              <p>Beamer presentation slides covering architecture, usage examples, and framework support.</p>
+              <span class="doc-meta">PDF • Beamer • 2025</span>
+            </div>
+            <div class="doc-item-icon">📥</div>
+          </a>
+          <a href="/docs/_presentation.tex" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>Presentation Source (Beamer)</h3>
+              <p>Beamer LaTeX source file for compiling the presentation.</p>
+              <span class="doc-meta">LaTeX • Beamer • Source • 2025</span>
+            </div>
+            <div class="doc-item-icon">📝</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-category">
+        <h2>📖 Reference Manuals</h2>
+        <div class="doc-list">
+          <a href="/docs/reference.pdf" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>MRF Compiler Reference Manual</h3>
+              <p>Complete reference manual with API documentation, command-line options, and detailed specifications.</p>
+              <span class="doc-meta">PDF • LaTeX • 2025</span>
+            </div>
+            <div class="doc-item-icon">📥</div>
+          </a>
+          <a href="/docs/_reference.tex" class="doc-item" target="_blank">
+            <div class="doc-item-content">
+              <h3>Reference Manual Source (LaTeX)</h3>
+              <p>LaTeX source file for compiling the reference manual.</p>
+              <span class="doc-meta">LaTeX • Source • 2025</span>
+            </div>
+            <div class="doc-item-icon">📝</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="doc-category">
+        <h2>🔧 User Guides</h2>
+        <div class="doc-list">
+          <a href="/installation" class="doc-item">
+            <div class="doc-item-content">
+              <h3>Installation Guide</h3>
+              <p>Step-by-step installation instructions for Linux, macOS, and Windows.</p>
+              <span class="doc-meta">HTML • Guide</span>
+            </div>
+            <div class="doc-item-icon">→</div>
+          </a>
+          <a href="/examples" class="doc-item">
+            <div class="doc-item-content">
+              <h3>Usage Examples</h3>
+              <p>Practical examples demonstrating how to use the MRF compiler with various frameworks.</p>
+              <span class="doc-meta">HTML • Examples</span>
+            </div>
+            <div class="doc-item-icon">→</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="api-section">
+  <div class="container">
+    <h2>API Reference</h2>
+    <div class="api-grid">
+      <div class="api-card">
+        <h3>Command Line Interface</h3>
+        <div class="code-block">
+          <pre><code>./mrf_compiler [options] [input_file] [output_file]
+
+Options:
+  -f, --framework &lt;name&gt;  Output framework
+  -a, --all               Export to all frameworks
+  -h, --help              Show help message</code></pre>
+        </div>
+      </div>
+      <div class="api-card">
+        <h3>Input Format</h3>
+        <div class="code-block">
+          <pre><code>TYPE directed|undirected
+NODE &lt;id&gt; &lt;name&gt; [num_states]
+EDGE &lt;from&gt; &lt;to&gt; [directed]</code></pre>
+        </div>
+      </div>
+      <div class="api-card">
+        <h3>Supported Frameworks</h3>
+        <ul class="api-list">
+          <li><code>qasm</code> - OpenQASM 2.0</li>
+          <li><code>qiskit</code> - IBM Qiskit</li>
+          <li><code>cirq</code> - Google Cirq</li>
+          <li><code>pennylane</code> - Xanadu PennyLane</li>
+          <li><code>qsharp</code> - Microsoft Q#</li>
+          <li><code>braket</code> - AWS Braket</li>
+          <li><code>qulacs</code> - Qulacs</li>
+          <li><code>tfq</code> - TensorFlow Quantum</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

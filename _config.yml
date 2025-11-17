@@ -1,0 +1,57 @@
+# Jekyll Configuration for MRF Compiler
+# Copyright (C) 2025, Shyamal Suhana Chandra
+
+title: MRF Compiler
+description: Convert graphical models to MRF and then to QPU circuits with support for multiple quantum computing frameworks
+author: Shyamal Suhana Chandra
+email: your.email@example.com
+url: https://shyamalchandra.github.io
+baseurl: /MRFcompiler
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+  - Makefile
+  - *.cpp
+  - *.h
+  - *.o
+  - mrf_compiler
+
+# Collections
+collections:
+  docs:
+    output: true
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Installation
+    url: /installation
+  - title: Documentation
+    url: /docs
+  - title: Examples
+    url: /examples
+  - title: GitHub
+    url: https://github.com/shyamalchandra/MRFcompiler

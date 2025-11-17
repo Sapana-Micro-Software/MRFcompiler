@@ -1,0 +1,6 @@
+TYPE undirected
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 1 2
