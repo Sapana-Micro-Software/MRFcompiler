@@ -470,6 +470,66 @@ function createConfetti(e: MouseEvent): void {
   }
 }
 
+// Page transition effect
+function initPageTransitions(): void {
+  document.body.classList.add('page-transition');
+  
+  // Add transition class to main content
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) {
+    mainContent.classList.add('page-transition');
+  }
+}
+
+// Magnetic button effect
+function initMagneticButtons(): void {
+  const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+  
+  buttons.forEach(button => {
+    const btnElement = button as HTMLElement;
+    btnElement.classList.add('btn-magnetic');
+    
+    btnElement.addEventListener('mousemove', (e: Event) => {
+      const mouseEvent = e as MouseEvent;
+      const rect = btnElement.getBoundingClientRect();
+      const x = mouseEvent.clientX - rect.left - rect.width / 2;
+      const y = mouseEvent.clientY - rect.top - rect.height / 2;
+      
+      btnElement.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px) translateY(-3px) scale(1.05)`;
+    });
+    
+    btnElement.addEventListener('mouseleave', () => {
+      btnElement.style.transform = '';
+    });
+  });
+}
+
+// Typing animation for hero title (optional enhancement)
+function initTypingEffect(): void {
+  const heroTitle = document.querySelector('.hero-title') as HTMLElement;
+  if (!heroTitle) return;
+  
+  const text = heroTitle.textContent || '';
+  if (text.length > 20) return; // Only for short titles
+  
+  heroTitle.textContent = '';
+  heroTitle.style.borderRight = '2px solid white';
+  heroTitle.style.animation = 'blink 1s infinite';
+  
+  let index = 0;
+  const typeInterval = setInterval(() => {
+    if (index < text.length) {
+      heroTitle.textContent += text[index];
+      index++;
+    } else {
+      clearInterval(typeInterval);
+      setTimeout(() => {
+        heroTitle.style.borderRight = 'none';
+      }, 1000);
+    }
+  }, 100);
+}
+
 // Initialize all functionality when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
@@ -484,6 +544,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
   initStaggeredAnimations();
   initNavbarScroll();
+  initPageTransitions();
+  initMagneticButtons();
   
   // Only enable cursor trail on desktop for performance
   if (window.innerWidth > 768) {

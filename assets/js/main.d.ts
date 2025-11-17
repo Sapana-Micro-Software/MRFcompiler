@@ -14,4 +14,7 @@ declare function initStaggeredAnimations(): void;
 declare function initCursorTrail(): void;
 declare function initConfetti(): void;
 declare function createConfetti(e: MouseEvent): void;
+declare function initPageTransitions(): void;
+declare function initMagneticButtons(): void;
+declare function initTypingEffect(): void;
 //# sourceMappingURL=main.d.ts.map

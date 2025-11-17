@@ -73,6 +73,21 @@ jobs:
           fi
           echo "✅ Jekyll build successful"
           echo "📦 Site size: $(du -sh _site | cut -f1)"
+          
+      - name: Check for common issues
+        run: |
+          echo "🔍 Checking for common issues..."
+          if [ ! -f "_site/index.html" ]; then
+            echo "⚠️  Warning: index.html not found in _site"
+          else
+            echo "✅ index.html found"
+          fi
+          if [ ! -f "_site/assets/js/main.js" ]; then
+            echo "⚠️  Warning: main.js not found - TypeScript may not have compiled"
+          else
+            echo "✅ main.js found"
+          fi
+          echo "📄 Files in _site: $(find _site -type f | wc -l)"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
