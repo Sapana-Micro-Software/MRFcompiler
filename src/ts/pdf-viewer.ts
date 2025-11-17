@@ -42,12 +42,18 @@ export class PDFViewer {
   }
 
   private setupEventListeners(): void {
-    const closeButtons = this.modal?.querySelectorAll('.pdf-modal-close');
-    closeButtons?.forEach(btn => {
-      btn.addEventListener('click', () => this.close());
+    if (!this.modal) return;
+    
+    const closeButtons = this.modal.querySelectorAll('.pdf-modal-close');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.close();
+      });
     });
 
-    this.modal?.addEventListener('click', (e) => {
+    this.modal.addEventListener('click', (e) => {
       if (e.target === this.modal) {
         this.close();
       }
@@ -61,7 +67,12 @@ export class PDFViewer {
   }
 
   public open(pdfInfo: PDFInfo): void {
-    if (!this.modal) return;
+    if (!this.modal) {
+      console.error('PDF modal not initialized');
+      // Fallback: open PDF in new tab
+      window.open(pdfInfo.url, '_blank');
+      return;
+    }
 
     this.currentPDF = pdfInfo;
     const titleEl = document.getElementById('pdf-modal-title');
@@ -70,9 +81,16 @@ export class PDFViewer {
 
     if (titleEl) titleEl.textContent = pdfInfo.title;
     if (iframeEl) {
+      iframeEl.style.opacity = '0';
       iframeEl.src = pdfInfo.url;
       iframeEl.onload = () => {
         iframeEl.style.opacity = '1';
+      };
+      iframeEl.onerror = () => {
+        console.error('Failed to load PDF:', pdfInfo.url);
+        // Fallback: open in new tab
+        window.open(pdfInfo.url, '_blank');
+        this.close();
       };
     }
     if (downloadLink) {
@@ -142,7 +160,9 @@ export class PDFCard {
   }
 
   private setupEventListeners(): void {
-    this.card.addEventListener('click', () => {
+    this.card.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       this.viewer.open(this.pdfInfo);
     });
 
@@ -152,6 +172,18 @@ export class PDFCard {
 
     this.card.addEventListener('mouseleave', () => {
       this.card.classList.remove('hover');
+    });
+    
+    // Make card keyboard accessible
+    this.card.setAttribute('tabindex', '0');
+    this.card.setAttribute('role', 'button');
+    this.card.setAttribute('aria-label', `View ${this.pdfInfo.title}`);
+    
+    this.card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.viewer.open(this.pdfInfo);
+      }
     });
   }
 

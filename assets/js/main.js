@@ -26,20 +26,27 @@ function initNavigation() {
 function initCodeCopy() {
     const copyButtons = document.querySelectorAll('.copy-btn');
     copyButtons.forEach((button) => {
-        button.addEventListener('click', async (e) => {
+        // Remove any existing listeners to avoid duplicates
+        const newButton = button.cloneNode(true);
+        button.parentNode?.replaceChild(newButton, button);
+        newButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const btn = e.currentTarget;
             const codeBlock = btn.closest('.code-block');
             const codeElement = codeBlock?.querySelector('code');
             if (codeElement) {
                 const text = codeElement.textContent || '';
+                const originalText = btn.textContent || 'Copy';
                 try {
                     await navigator.clipboard.writeText(text);
-                    const originalText = btn.textContent;
                     btn.textContent = 'Copied!';
                     btn.style.background = '#10b981';
                     setTimeout(() => {
-                        btn.textContent = originalText;
-                        btn.style.background = '';
+                        if (btn) {
+                            btn.textContent = originalText;
+                            btn.style.background = '';
+                        }
                     }, 2000);
                 }
                 catch (err) {
@@ -47,14 +54,25 @@ function initCodeCopy() {
                     // Fallback for older browsers
                     const textarea = document.createElement('textarea');
                     textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
                     document.body.appendChild(textarea);
                     textarea.select();
-                    document.execCommand('copy');
+                    try {
+                        document.execCommand('copy');
+                        btn.textContent = 'Copied!';
+                        btn.style.background = '#10b981';
+                        setTimeout(() => {
+                            if (btn) {
+                                btn.textContent = originalText;
+                                btn.style.background = '';
+                            }
+                        }, 2000);
+                    }
+                    catch (e) {
+                        console.error('Fallback copy failed:', e);
+                    }
                     document.body.removeChild(textarea);
-                    btn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        btn.textContent = 'Copy';
-                    }, 2000);
                 }
             }
         });
@@ -65,14 +83,18 @@ function initInstallationTabs() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     tabButtons.forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const targetTab = button.getAttribute('data-tab');
+            if (!targetTab)
+                return;
             // Remove active class from all buttons and contents
             tabButtons.forEach((btn) => btn.classList.remove('active'));
             tabContents.forEach((content) => content.classList.remove('active'));
             // Add active class to clicked button and corresponding content
             button.classList.add('active');
-            const targetContent = document.getElementById(targetTab || '');
+            const targetContent = document.getElementById(targetTab);
             if (targetContent) {
                 targetContent.classList.add('active');
             }
@@ -126,7 +148,9 @@ function initDarkMode() {
     html.setAttribute('data-theme', currentTheme);
     updateThemeIcon(currentTheme);
     if (themeToggle && themeIcon) {
-        themeToggle.addEventListener('click', () => {
+        themeToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const currentTheme = html.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', newTheme);
@@ -468,28 +492,79 @@ function initTypingEffect() {
 }
 // Initialize all functionality when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    initNavigation();
-    initCodeCopy();
-    initInstallationTabs();
-    initSmoothScroll();
-    initScrollAnimations();
-    initDarkMode();
-    initParallax();
-    initScrollIndicator();
-    initParticles();
-    initScrollProgress();
-    initStaggeredAnimations();
-    initNavbarScroll();
-    initPageTransitions();
-    initMagneticButtons();
-    // Only enable cursor trail on desktop for performance
-    if (window.innerWidth > 768) {
-        initCursorTrail();
+    try {
+        initNavigation();
+        initCodeCopy();
+        initInstallationTabs();
+        initSmoothScroll();
+        initScrollAnimations();
+        initDarkMode();
+        initParallax();
+        initScrollIndicator();
+        initParticles();
+        initScrollProgress();
+        initStaggeredAnimations();
+        initNavbarScroll();
+        initPageTransitions();
+        initMagneticButtons();
+        // Only enable cursor trail on desktop for performance
+        if (window.innerWidth > 768) {
+            initCursorTrail();
+        }
+        initConfetti();
+        initCanvasEffects();
+        initPDFViewer();
     }
-    initConfetti();
-    initCanvasEffects();
-    initPDFViewer();
+    catch (error) {
+        console.error('Error during initialization:', error);
+    }
 });
+(function () {
+    function copyCodeFunction(button) {
+        const codeBlock = button.closest('.code-block');
+        const codeElement = codeBlock?.querySelector('code');
+        if (codeElement) {
+            const text = codeElement.textContent || '';
+            const originalText = button.textContent || 'Copy';
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                setTimeout(() => {
+                    if (button) {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }
+                }, 2000);
+            }).catch((err) => {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    button.textContent = 'Copied!';
+                    setTimeout(() => {
+                        if (button) {
+                            button.textContent = originalText;
+                        }
+                    }, 2000);
+                }
+                catch (e) {
+                    console.error('Fallback copy failed:', e);
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+    }
+    // Make it available on window immediately
+    if (typeof window !== 'undefined') {
+        window.copyCode = copyCodeFunction;
+    }
+})();
 // Initialize enhanced Canvas effects
 function initCanvasEffects() {
     // Initialize hero canvas
@@ -525,52 +600,52 @@ function initCanvasEffects() {
 }
 // Initialize PDF viewer and cards
 function initPDFViewer() {
-    const pdfViewer = new PDFViewer();
-    const pdfCards = [];
-    // Find all PDF cards
-    const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
-    docCards.forEach((card) => {
-        const cardEl = card;
-        const pdfUrl = cardEl.getAttribute('data-pdf-url');
-        const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
-        const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper');
-        if (pdfUrl) {
-            const iconMap = {
-                paper: '📄',
-                presentation: '📊',
-                reference: '📖'
-            };
-            const pdfInfo = {
-                title: pdfTitle,
-                description: '',
-                url: pdfUrl,
-                icon: iconMap[pdfType] || '📄',
-                type: pdfType
-            };
-            const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
-            pdfCards.push(pdfCard);
-        }
-    });
-}
-// Make copyCode available globally for inline onclick handlers
-window.copyCode = function (button) {
-    const codeBlock = button.closest('.code-block');
-    const codeElement = codeBlock?.querySelector('code');
-    if (codeElement) {
-        const text = codeElement.textContent || '';
-        navigator.clipboard.writeText(text).then(() => {
-            const originalText = button.textContent;
-            if (originalText) {
-                button.textContent = 'Copied!';
-                button.style.background = '#10b981';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.style.background = '';
-                }, 2000);
+    try {
+        const pdfViewer = new PDFViewer();
+        const pdfCards = [];
+        // Find all PDF cards
+        const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
+        docCards.forEach((card) => {
+            try {
+                const cardEl = card;
+                const pdfUrl = cardEl.getAttribute('data-pdf-url');
+                const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
+                const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper');
+                if (pdfUrl) {
+                    const iconMap = {
+                        paper: '📄',
+                        presentation: '📊',
+                        reference: '📖'
+                    };
+                    const pdfInfo = {
+                        title: pdfTitle,
+                        description: '',
+                        url: pdfUrl,
+                        icon: iconMap[pdfType] || '📄',
+                        type: pdfType
+                    };
+                    const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
+                    pdfCards.push(pdfCard);
+                }
             }
-        }).catch((err) => {
-            console.error('Failed to copy:', err);
+            catch (err) {
+                console.warn('Error initializing PDF card:', err);
+            }
         });
     }
-};
+    catch (err) {
+        console.error('Error initializing PDF viewer:', err);
+        // Fallback: make PDF cards open in new tab
+        const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
+        docCards.forEach((card) => {
+            const cardEl = card;
+            const pdfUrl = cardEl.getAttribute('data-pdf-url');
+            if (pdfUrl) {
+                cardEl.addEventListener('click', () => {
+                    window.open(pdfUrl, '_blank');
+                });
+            }
+        });
+    }
+}
 //# sourceMappingURL=main.js.map

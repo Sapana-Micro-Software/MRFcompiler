@@ -32,38 +32,56 @@ function initCodeCopy(): void {
   const copyButtons = document.querySelectorAll('.copy-btn');
   
   copyButtons.forEach((button) => {
-    button.addEventListener('click', async (e: Event) => {
+    // Remove any existing listeners to avoid duplicates
+    const newButton = button.cloneNode(true) as HTMLButtonElement;
+    button.parentNode?.replaceChild(newButton, button);
+    
+    newButton.addEventListener('click', async (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const btn = e.currentTarget as HTMLButtonElement;
       const codeBlock = btn.closest('.code-block');
       const codeElement = codeBlock?.querySelector('code');
       
       if (codeElement) {
         const text = codeElement.textContent || '';
+        const originalText = btn.textContent || 'Copy';
         
         try {
           await navigator.clipboard.writeText(text);
-          const originalText = btn.textContent;
           btn.textContent = 'Copied!';
           btn.style.background = '#10b981';
           
           setTimeout(() => {
-            btn.textContent = originalText;
-            btn.style.background = '';
+            if (btn) {
+              btn.textContent = originalText;
+              btn.style.background = '';
+            }
           }, 2000);
         } catch (err) {
           console.error('Failed to copy:', err);
           // Fallback for older browsers
           const textarea = document.createElement('textarea');
           textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
           document.body.appendChild(textarea);
           textarea.select();
-          document.execCommand('copy');
+          try {
+            document.execCommand('copy');
+            btn.textContent = 'Copied!';
+            btn.style.background = '#10b981';
+            setTimeout(() => {
+              if (btn) {
+                btn.textContent = originalText;
+                btn.style.background = '';
+              }
+            }, 2000);
+          } catch (e) {
+            console.error('Fallback copy failed:', e);
+          }
           document.body.removeChild(textarea);
-          
-          btn.textContent = 'Copied!';
-          setTimeout(() => {
-            btn.textContent = 'Copy';
-          }, 2000);
         }
       }
     });
@@ -76,8 +94,13 @@ function initInstallationTabs(): void {
   const tabContents = document.querySelectorAll('.tab-content');
 
   tabButtons.forEach((button) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const targetTab = button.getAttribute('data-tab');
+      
+      if (!targetTab) return;
       
       // Remove active class from all buttons and contents
       tabButtons.forEach((btn) => btn.classList.remove('active'));
@@ -85,7 +108,7 @@ function initInstallationTabs(): void {
       
       // Add active class to clicked button and corresponding content
       button.classList.add('active');
-      const targetContent = document.getElementById(targetTab || '');
+      const targetContent = document.getElementById(targetTab);
       if (targetContent) {
         targetContent.classList.add('active');
       }
@@ -146,7 +169,10 @@ function initDarkMode(): void {
   updateThemeIcon(currentTheme);
 
   if (themeToggle && themeIcon) {
-    themeToggle.addEventListener('click', () => {
+    themeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const currentTheme = html.getAttribute('data-theme') || 'light';
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       
@@ -536,30 +562,92 @@ function initTypingEffect(): void {
 
 // Initialize all functionality when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  initNavigation();
-  initCodeCopy();
-  initInstallationTabs();
-  initSmoothScroll();
-  initScrollAnimations();
-  initDarkMode();
-  initParallax();
-  initScrollIndicator();
-  initParticles();
-  initScrollProgress();
-  initStaggeredAnimations();
-  initNavbarScroll();
-  initPageTransitions();
-  initMagneticButtons();
-  
-  // Only enable cursor trail on desktop for performance
-  if (window.innerWidth > 768) {
-    initCursorTrail();
+  try {
+    initNavigation();
+    initCodeCopy();
+    initInstallationTabs();
+    initSmoothScroll();
+    initScrollAnimations();
+    initDarkMode();
+    initParallax();
+    initScrollIndicator();
+    initParticles();
+    initScrollProgress();
+    initStaggeredAnimations();
+    initNavbarScroll();
+    initPageTransitions();
+    initMagneticButtons();
+    
+    // Only enable cursor trail on desktop for performance
+    if (window.innerWidth > 768) {
+      initCursorTrail();
+    }
+    
+    initConfetti();
+    initCanvasEffects();
+    initPDFViewer();
+  } catch (error) {
+    console.error('Error during initialization:', error);
+  }
+});
+
+// Make copyCode available globally for inline onclick handlers
+// Initialize immediately so it's available before DOMContentLoaded
+declare global {
+  interface Window {
+    copyCode: (button: HTMLButtonElement) => void;
+  }
+}
+
+(function() {
+  function copyCodeFunction(button: HTMLButtonElement): void {
+    const codeBlock = button.closest('.code-block');
+    const codeElement = codeBlock?.querySelector('code');
+    
+    if (codeElement) {
+      const text = codeElement.textContent || '';
+      const originalText = button.textContent || 'Copy';
+      
+      navigator.clipboard.writeText(text).then(() => {
+        button.textContent = 'Copied!';
+        button.style.background = '#10b981';
+        
+        setTimeout(() => {
+          if (button) {
+            button.textContent = originalText;
+            button.style.background = '';
+          }
+        }, 2000);
+      }).catch((err) => {
+        console.error('Failed to copy:', err);
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          button.textContent = 'Copied!';
+          setTimeout(() => {
+            if (button) {
+              button.textContent = originalText;
+            }
+          }, 2000);
+        } catch (e) {
+          console.error('Fallback copy failed:', e);
+        }
+        document.body.removeChild(textarea);
+      });
+    }
   }
   
-  initConfetti();
-  initCanvasEffects();
-  initPDFViewer();
-});
+  // Make it available on window immediately
+  if (typeof window !== 'undefined') {
+    (window as any).copyCode = copyCodeFunction;
+  }
+})();
 
 // Initialize enhanced Canvas effects
 function initCanvasEffects(): void {
@@ -596,59 +684,55 @@ function initCanvasEffects(): void {
 
 // Initialize PDF viewer and cards
 function initPDFViewer(): void {
-  const pdfViewer = new PDFViewer();
-  const pdfCards: PDFCard[] = [];
+  try {
+    const pdfViewer = new PDFViewer();
+    const pdfCards: PDFCard[] = [];
 
-  // Find all PDF cards
-  const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
-  
-  docCards.forEach((card) => {
-    const cardEl = card as HTMLElement;
-    const pdfUrl = cardEl.getAttribute('data-pdf-url');
-    const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
-    const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper') as 'paper' | 'presentation' | 'reference';
+    // Find all PDF cards
+    const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
     
-    if (pdfUrl) {
-      const iconMap: Record<string, string> = {
-        paper: '📄',
-        presentation: '📊',
-        reference: '📖'
-      };
-
-      const pdfInfo: PDFInfo = {
-        title: pdfTitle,
-        description: '',
-        url: pdfUrl,
-        icon: iconMap[pdfType] || '📄',
-        type: pdfType
-      };
-
-      const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
-      pdfCards.push(pdfCard);
-    }
-  });
-}
-
-// Make copyCode available globally for inline onclick handlers
-(window as any).copyCode = function(button: HTMLButtonElement): void {
-  const codeBlock = button.closest('.code-block');
-  const codeElement = codeBlock?.querySelector('code');
-  
-  if (codeElement) {
-    const text = codeElement.textContent || '';
-    navigator.clipboard.writeText(text).then(() => {
-      const originalText = button.textContent;
-      if (originalText) {
-        button.textContent = 'Copied!';
-        button.style.background = '#10b981';
+    docCards.forEach((card) => {
+      try {
+        const cardEl = card as HTMLElement;
+        const pdfUrl = cardEl.getAttribute('data-pdf-url');
+        const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
+        const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper') as 'paper' | 'presentation' | 'reference';
         
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.style.background = '';
-        }, 2000);
+        if (pdfUrl) {
+          const iconMap: Record<string, string> = {
+            paper: '📄',
+            presentation: '📊',
+            reference: '📖'
+          };
+
+          const pdfInfo: PDFInfo = {
+            title: pdfTitle,
+            description: '',
+            url: pdfUrl,
+            icon: iconMap[pdfType] || '📄',
+            type: pdfType
+          };
+
+          const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
+          pdfCards.push(pdfCard);
+        }
+      } catch (err) {
+        console.warn('Error initializing PDF card:', err);
       }
-    }).catch((err) => {
-      console.error('Failed to copy:', err);
+    });
+  } catch (err) {
+    console.error('Error initializing PDF viewer:', err);
+    // Fallback: make PDF cards open in new tab
+    const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
+    docCards.forEach((card) => {
+      const cardEl = card as HTMLElement;
+      const pdfUrl = cardEl.getAttribute('data-pdf-url');
+      if (pdfUrl) {
+        cardEl.addEventListener('click', () => {
+          window.open(pdfUrl, '_blank');
+        });
+      }
     });
   }
-};
+}
+

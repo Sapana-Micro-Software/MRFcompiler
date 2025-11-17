@@ -22,7 +22,7 @@
         <li><a href="{{ site.baseurl }}/installation">Installation</a></li>
         <li><a href="{{ site.baseurl }}/docs">Documentation</a></li>
         <li><a href="{{ site.baseurl }}/examples">Examples</a></li>
-        <li><a href="https://github.com/shyamalchandra/MRFcompiler" target="_blank">GitHub</a></li>
+        <li><a href="https://github.com/Sapana-Micro-Software/MRFcompiler" target="_blank">GitHub</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,8 +75,8 @@
         <div class="footer-section">
           <h4>Connect</h4>
           <ul>
-            <li><a href="https://github.com/shyamalchandra/MRFcompiler" target="_blank">GitHub</a></li>
-            <li><a href="https://github.com/shyamalchandra/MRFcompiler/issues" target="_blank">Issues</a></li>
+            <li><a href="https://github.com/Sapana-Micro-Software/MRFcompiler" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/Sapana-Micro-Software/MRFcompiler/issues" target="_blank">Issues</a></li>
           </ul>
         </div>
       </div>
@@ -86,6 +86,60 @@
     </div>
   </footer>
 
+  <!-- Inline script to ensure copyCode is available for onclick handlers -->
+  <script>
+    // Make copyCode available immediately for inline onclick handlers
+    window.copyCode = function(button) {
+      const codeBlock = button.closest('.code-block');
+      const codeElement = codeBlock ? codeBlock.querySelector('code') : null;
+      
+      if (codeElement) {
+        const text = codeElement.textContent || '';
+        const originalText = button.textContent || 'Copy';
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function() {
+            button.textContent = 'Copied!';
+            button.style.background = '#10b981';
+            setTimeout(function() {
+              if (button) {
+                button.textContent = originalText;
+                button.style.background = '';
+              }
+            }, 2000);
+          }).catch(function(err) {
+            console.error('Failed to copy:', err);
+            fallbackCopy(text, button, originalText);
+          });
+        } else {
+          fallbackCopy(text, button, originalText);
+        }
+      }
+    };
+    
+    function fallbackCopy(text, button, originalText) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        button.textContent = 'Copied!';
+        button.style.background = '#10b981';
+        setTimeout(function() {
+          if (button) {
+            button.textContent = originalText;
+            button.style.background = '';
+          }
+        }, 2000);
+      } catch (e) {
+        console.error('Fallback copy failed:', e);
+      }
+      document.body.removeChild(textarea);
+    }
+  </script>
   <script type="module" src="{{ site.baseurl }}/assets/js/main.js"></script>
 </body>
 </html>

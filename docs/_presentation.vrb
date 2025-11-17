@@ -1,0 +1,20 @@
+\frametitle{Getting Started}
+\begin{block}{Installation}
+\begin{lstlisting}
+git clone https://github.com/shyamalchandra/MRFcompiler.git
+cd MRFcompiler
+make
+\end{lstlisting}
+\end{block}
+\begin{block}{Quick Start}
+\begin{lstlisting}
+./mrf_compiler -f qiskit example.txt circuit.py
+\end{lstlisting}
+\end{block}
+\begin{block}{Documentation}
+\begin{itemize}
+\item Research paper (13 pages)
+\item Reference manual (complete API)
+\item Examples and tutorials
+\end{itemize}
+\end{block}

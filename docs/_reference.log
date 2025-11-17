@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.10.11)  17 NOV 2025 10:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.10.11)  17 NOV 2025 12:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -354,118 +354,324 @@ Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
 \c@LT@chunks=\count306
 \LT@p@ftn=\toks26
 )
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/geometry/geome
+try.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/generic/iftex/ifvtex
+.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count307
+\Gm@cntv=\count308
+\c@Gm@tempcnt=\count309
+\Gm@bindingoffset=\dimen160
+\Gm@wd@mp=\dimen161
+\Gm@odd@mp=\dimen162
+\Gm@even@mp=\dimen163
+\Gm@layoutwidth=\dimen164
+\Gm@layoutheight=\dimen165
+\Gm@layouthoffset=\dimen166
+\Gm@layoutvoffset=\dimen167
+\Gm@dimlist=\toks27
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/booktabs/bookt
+abs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen168
+\lightrulewidth=\dimen169
+\cmidrulewidth=\dimen170
+\belowrulesep=\dimen171
+\belowbottomsep=\dimen172
+\aboverulesep=\dimen173
+\abovetopsep=\dimen174
+\cmidrulesep=\dimen175
+\cmidrulekern=\dimen176
+\defaultaddspace=\dimen177
+\@cmidla=\count310
+\@cmidlb=\count311
+\@aboverulesep=\dimen178
+\@belowrulesep=\dimen179
+\@thisruleclass=\count312
+\@lastruleclass=\count313
+\@thisrulewidth=\dimen180
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/tools/verbatim
+.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks28
+\verbatim@line=\toks29
+\verbatim@in@stream=\read2
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
+ng1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
+ng1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstmi
+sc.sty
+File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
+)
 (/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/l3backend/l3ba
 ckend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count307
+\l__color_backend_stack_int=\count314
 \l__pdf_internal_box=\box61
-)
-No file _reference.aux.
+) (./_reference.aux)
 \openout1 = `_reference.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-\c@lstlisting=\count308
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+\c@lstlisting=\count315
 
 (/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/context/base/mkii/su
 pp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count309
-\scratchdimen=\dimen160
+\scratchcounter=\count316
+\scratchdimen=\dimen181
 \scratchbox=\box62
-\nofMPsegments=\count310
-\nofMParguments=\count311
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count312
-\MPscratchDim=\dimen161
-\MPnumerator=\count313
-\makeMPintoPDFobject=\count314
-\everyMPtoPDFconversion=\toks28
+\nofMPsegments=\count317
+\nofMParguments=\count318
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count319
+\MPscratchDim=\dimen182
+\MPnumerator=\count320
+\makeMPintoPDFobject=\count321
+\everyMPtoPDFconversion=\toks31
 )
-Package hyperref Info: Link coloring OFF on input line 16.
+Package hyperref Info: Link coloring OFF on input line 39.
+ (./_reference.out) (./_reference.out)
 \@outlinefile=\write3
 \openout3 = `_reference.out'.
 
 
-No file _reference.toc.
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=452.9679pt
+* \textheight=700.50687pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(./_reference.toc
+
+[1
+
+{/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/
+pdftex.map}])
 \tf@toc=\write4
 \openout4 = `_reference.toc'.
 
 
 
-[1
+[2]
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
+ng1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
+ng1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
 
-{/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/map/pdftex/updmap/
-pdftex.map}]
-Overfull \hbox (3.88582pt too wide) in alignment at lines 34--38
- [] [] 
+[3{/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/enc/dvips/cm-sup
+er/cm-super-ts1.enc}]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 92.
+
+Overfull \hbox (50.4918pt too wide) in paragraph at lines 144--144
+[]|[][]\OT1/cmtt/m/n/12 -f, --framework <name>| 
  []
 
 
-Overfull \hbox (3.88582pt too wide) in alignment at lines 38--42
- [] [] 
+Overfull \hbox (31.9668pt too wide) in paragraph at lines 152--152
+[]|[][]\OT1/cmtt/m/n/12 -o, --output <file>| 
+ []
+
+[4]
+
+[5]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.226     \item \texttt{[num_states]}
+                                     : Optional number of states (default: 2...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+<recently read> \egroup 
+                        
+l.226     \item \texttt{[num_states]}
+                                     : Optional number of states (default: 2...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \end{itemize} invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.227 \end{itemize}
+                   
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.227 \end{itemize}
+                   
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.227 \end{itemize}
+                   
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+
+[6]
+(/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
+ng1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
+
+[7]
+
+[8]
+
+[9]
+Overfull \hbox (5.74991pt too wide) in paragraph at lines 472--473
+[]\OT1/cmtt/m/n/12 void addNode(int id, const std::string& name, int num[]state
+s = 2)\OT1/cmr/m/n/12 : Add
  []
 
 
-Overfull \hbox (7.26678pt too wide) in paragraph at lines 43--43
-[]|[][]\OT1/cmtt/m/n/12 -f, --framework| 
+
+[10]
+Overfull \hbox (5.74991pt too wide) in paragraph at lines 490--491
+[]\OT1/cmtt/m/n/12 void addNode(int id, const std::string& name, int num[]state
+s = 2)\OT1/cmr/m/n/12 : Add
  []
 
 
-Overfull \hbox (3.88582pt too wide) in alignment at lines 42--49
- [] [] 
+Overfull \hbox (53.41689pt too wide) in paragraph at lines 492--493
+[]\OT1/cmtt/m/n/12 void setCliquePotential(int clique[]idx, const std::vector<d
+ouble>& potential)\OT1/cmr/m/n/12 :
+ []
+
+
+Overfull \hbox (10.36485pt too wide) in paragraph at lines 500--501
+[]\OT1/cmtt/m/n/12 MRF convertToMRF(const GraphicalModel& gm)\OT1/cmr/m/n/12 : 
+Con-vert graph-i-cal model to MRF 
+ []
+
+
+Overfull \hbox (3.4275pt too wide) in paragraph at lines 502--503
+[]\OT1/cmtt/m/n/12 std::vector<Clique> findMaximalCliques(const GraphicalModel&
+ gm)\OT1/cmr/m/n/12 : Find
  []
 
 
 
-[2] (./_reference.aux)
+[11]
+
+[12]
+
+[13]
+
+[14]
+
+[15] (./_reference.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-Package rerunfilecheck Warning: File `_reference.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `_reference.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  3E153B4D7B54FF2D497655C38D162354;1132.
+Package rerunfilecheck Info: File `_reference.out' has not changed.
+(rerunfilecheck)             Checksum: 282B429525A0E793F0F08BB2AFC63792;8379.
  ) 
 Here is how much of TeX's memory you used:
- 10725 strings out of 473190
- 165127 string characters out of 5705897
- 576558 words of memory out of 5000000
- 33882 multiletter control sequences out of 15000+600000
- 562187 words of font info for 48 fonts, out of 8000000 for 9000
+ 12396 strings out of 473190
+ 188006 string characters out of 5705897
+ 838273 words of memory out of 5000000
+ 35258 multiletter control sequences out of 15000+600000
+ 566104 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,258b,440s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,418b,2135s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/local/Cellar/texlive/20250308_1/shar
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/Cellar/texliv
-e/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on _reference.pdf (2 pages, 52875 bytes).
+s/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/Cellar/texlive/20250308_1/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/Cellar/texli
+ve/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr17.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr6.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/Cellar/texlive/20250308
+_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/Cella
+r/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+
+Output written on _reference.pdf (15 pages, 161741 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
- 39 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 680 PDF objects out of 1000 (max. 8388607)
+ 638 compressed objects within 7 object streams
+ 267 named destinations out of 1000 (max. 500000)
+ 489 words of extra memory for PDF output out of 10000 (max. 10000000)
 
