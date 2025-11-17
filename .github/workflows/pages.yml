@@ -81,6 +81,24 @@ jobs:
           echo "✅ Jekyll build successful"
           echo "📦 Site size: $(du -sh _site | cut -f1)"
           
+      - name: Verify PDFs are present
+        run: |
+          echo "🔍 Verifying PDF files..."
+          if [ ! -f "docs/paper.pdf" ]; then
+            echo "❌ Error: paper.pdf not found in docs/"
+            exit 1
+          fi
+          if [ ! -f "docs/presentation.pdf" ]; then
+            echo "❌ Error: presentation.pdf not found in docs/"
+            exit 1
+          fi
+          if [ ! -f "docs/reference.pdf" ]; then
+            echo "❌ Error: reference.pdf not found in docs/"
+            exit 1
+          fi
+          echo "✅ All PDFs found in repository"
+          ls -lh docs/*.pdf | awk '{print "  - " $9 " (" $5 ")"}'
+
       - name: Check for common issues
         run: |
           echo "🔍 Checking for common issues..."
@@ -99,7 +117,25 @@ jobs:
           else
             echo "✅ canvas-effects.js found"
           fi
-          echo "📄 Files in _site: $(find _site -type f | wc -l)"
+          
+      - name: Verify PDFs in Jekyll build
+        run: |
+          echo "🔍 Verifying PDFs are included in Jekyll build..."
+          if [ ! -f "_site/docs/paper.pdf" ]; then
+            echo "❌ Error: paper.pdf not found in _site/docs/"
+            exit 1
+          fi
+          if [ ! -f "_site/docs/presentation.pdf" ]; then
+            echo "❌ Error: presentation.pdf not found in _site/docs/"
+            exit 1
+          fi
+          if [ ! -f "_site/docs/reference.pdf" ]; then
+            echo "❌ Error: reference.pdf not found in _site/docs/"
+            exit 1
+          fi
+          echo "✅ All PDFs found in Jekyll build"
+          ls -lh _site/docs/*.pdf | awk '{print "  - " $9 " (" $5 ")"}'
+          echo "📄 Total files in _site: $(find _site -type f | wc -l)"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
