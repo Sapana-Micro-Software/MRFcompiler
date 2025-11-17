@@ -924,6 +924,24 @@ section {
   color: var(--primary-color);
   font-weight: 600;
   margin-top: auto;
+  text-decoration: none;
+  display: inline-block;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.doc-link:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+  transform: translateX(4px);
+}
+
+.doc-link:visited {
+  color: var(--primary-color);
+}
+
+a.doc-link {
+  cursor: pointer;
 }
 
 /* Page Header */
