@@ -2,6 +2,8 @@
 // Copyright (C) 2025, Shyamal Suhana Chandra
 
 import { QuantumCanvas, QuantumCircuitCanvas } from './canvas-effects';
+import { HeroCanvas } from './hero-canvas';
+import { PDFViewer, PDFCard, PDFInfo } from './pdf-viewer';
 
 // Navigation toggle functionality
 function initNavigation(): void {
@@ -556,10 +558,21 @@ document.addEventListener('DOMContentLoaded', () => {
   
   initConfetti();
   initCanvasEffects();
+  initPDFViewer();
 });
 
 // Initialize enhanced Canvas effects
 function initCanvasEffects(): void {
+  // Initialize hero canvas
+  const heroCanvas = document.getElementById('hero-canvas');
+  if (heroCanvas) {
+    try {
+      new HeroCanvas('hero-canvas');
+    } catch (err) {
+      console.warn('Could not initialize hero canvas:', err);
+    }
+  }
+
   // Initialize quantum particle canvas if element exists
   const quantumCanvas = document.getElementById('quantum-canvas');
   if (quantumCanvas) {
@@ -579,6 +592,41 @@ function initCanvasEffects(): void {
       console.warn('Could not initialize circuit canvas:', err);
     }
   }
+}
+
+// Initialize PDF viewer and cards
+function initPDFViewer(): void {
+  const pdfViewer = new PDFViewer();
+  const pdfCards: PDFCard[] = [];
+
+  // Find all PDF cards
+  const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
+  
+  docCards.forEach((card) => {
+    const cardEl = card as HTMLElement;
+    const pdfUrl = cardEl.getAttribute('data-pdf-url');
+    const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
+    const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper') as 'paper' | 'presentation' | 'reference';
+    
+    if (pdfUrl) {
+      const iconMap: Record<string, string> = {
+        paper: '📄',
+        presentation: '📊',
+        reference: '📖'
+      };
+
+      const pdfInfo: PDFInfo = {
+        title: pdfTitle,
+        description: '',
+        url: pdfUrl,
+        icon: iconMap[pdfType] || '📄',
+        type: pdfType
+      };
+
+      const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
+      pdfCards.push(pdfCard);
+    }
+  });
 }
 
 // Make copyCode available globally for inline onclick handlers

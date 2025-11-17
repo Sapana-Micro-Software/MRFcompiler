@@ -5,6 +5,7 @@ subtitle: Convert Graphical Models to Quantum Circuits
 ---
 
 <div class="hero">
+  <canvas id="hero-canvas" class="hero-canvas"></canvas>
   <div class="hero-content">
     <h1 class="hero-title">{{ page.title }}</h1>
     <p class="hero-subtitle">{{ page.subtitle }}</p>
@@ -142,42 +143,69 @@ make
 <section class="documentation">
   <div class="container">
     <h2 class="section-title">Documentation</h2>
+    <p class="section-subtitle" style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+      Comprehensive documentation including research papers, presentations, and reference manuals. Click any document to view in our interactive PDF viewer.
+    </p>
     <div class="docs-grid">
-      <a href="{{ site.baseurl }}/docs/paper.pdf" class="doc-card" target="_blank">
-        <div class="doc-icon">📄</div>
-        <h3>Research Paper</h3>
-        <p>LaTeX research paper describing the MRF compiler methodology and algorithms.</p>
-        <span class="doc-link">View PDF →</span>
+      <div class="doc-card" data-pdf-type="paper" data-pdf-url="{{ site.baseurl }}/docs/paper.pdf" data-pdf-title="Research Paper">
+        <div class="doc-card-body">
+          <div class="doc-icon">📄</div>
+          <h3>Research Paper</h3>
+          <p>13-page comprehensive LaTeX research paper describing the MRF compiler methodology, algorithms, and implementation details.</p>
+          <div class="doc-meta">
+            <span class="doc-pages">13 pages</span>
+            <span class="doc-type">LaTeX</span>
+          </div>
+          <span class="doc-link">View PDF →</span>
+        </div>
+      </div>
+      <div class="doc-card" data-pdf-type="presentation" data-pdf-url="{{ site.baseurl }}/docs/presentation.pdf" data-pdf-title="Beamer Presentation">
+        <div class="doc-card-body">
+          <div class="doc-icon">📊</div>
+          <h3>Beamer Presentation</h3>
+          <p>Slides presentation covering the compiler architecture, conversion pipeline, and usage examples.</p>
+          <div class="doc-meta">
+            <span class="doc-pages">6 slides</span>
+            <span class="doc-type">Beamer</span>
+          </div>
+          <span class="doc-link">View PDF →</span>
+        </div>
+      </div>
+      <div class="doc-card" data-pdf-type="reference" data-pdf-url="{{ site.baseurl }}/docs/reference.pdf" data-pdf-title="Reference Manual">
+        <div class="doc-card-body">
+          <div class="doc-icon">📖</div>
+          <h3>Reference Manual</h3>
+          <p>Complete reference manual with API documentation, command-line options, and detailed specifications.</p>
+          <div class="doc-meta">
+            <span class="doc-pages">Full reference</span>
+            <span class="doc-type">LaTeX</span>
+          </div>
+          <span class="doc-link">View PDF →</span>
+        </div>
+      </div>
+      <a href="{{ site.baseurl }}/docs/_paper.tex" class="doc-card doc-card-source" target="_blank">
+        <div class="doc-card-body">
+          <div class="doc-icon">📝</div>
+          <h3>Paper Source (LaTeX)</h3>
+          <p>LaTeX source file for the research paper. View and edit the complete source code.</p>
+          <span class="doc-link">View Source →</span>
+        </div>
       </a>
-      <a href="{{ site.baseurl }}/docs/presentation.pdf" class="doc-card" target="_blank">
-        <div class="doc-icon">📊</div>
-        <h3>Beamer Presentation</h3>
-        <p>Slides presentation covering the compiler architecture and usage examples.</p>
-        <span class="doc-link">View PDF →</span>
+      <a href="{{ site.baseurl }}/docs/_presentation.tex" class="doc-card doc-card-source" target="_blank">
+        <div class="doc-card-body">
+          <div class="doc-icon">📝</div>
+          <h3>Presentation Source (Beamer)</h3>
+          <p>Beamer LaTeX source file for the presentation. Customize and build your own version.</p>
+          <span class="doc-link">View Source →</span>
+        </div>
       </a>
-      <a href="{{ site.baseurl }}/docs/reference.pdf" class="doc-card" target="_blank">
-        <div class="doc-icon">📖</div>
-        <h3>Reference Manual</h3>
-        <p>Complete reference manual with API documentation and detailed specifications.</p>
-        <span class="doc-link">View PDF →</span>
-      </a>
-      <a href="{{ site.baseurl }}/docs/_paper.tex" class="doc-card" target="_blank">
-        <div class="doc-icon">📝</div>
-        <h3>Paper Source (LaTeX)</h3>
-        <p>LaTeX source file for the research paper.</p>
-        <span class="doc-link">View Source →</span>
-      </a>
-      <a href="{{ site.baseurl }}/docs/_presentation.tex" class="doc-card" target="_blank">
-        <div class="doc-icon">📝</div>
-        <h3>Presentation Source (Beamer)</h3>
-        <p>Beamer LaTeX source file for the presentation.</p>
-        <span class="doc-link">View Source →</span>
-      </a>
-      <a href="{{ site.baseurl }}/docs/_reference.tex" class="doc-card" target="_blank">
-        <div class="doc-icon">📝</div>
-        <h3>Reference Manual Source (LaTeX)</h3>
-        <p>LaTeX source file for the reference manual.</p>
-        <span class="doc-link">View Source →</span>
+      <a href="{{ site.baseurl }}/docs/_reference.tex" class="doc-card doc-card-source" target="_blank">
+        <div class="doc-card-body">
+          <div class="doc-icon">📝</div>
+          <h3>Reference Manual Source (LaTeX)</h3>
+          <p>LaTeX source file for the reference manual. Access the complete documentation source.</p>
+          <span class="doc-link">View Source →</span>
+        </div>
       </a>
     </div>
   </div>

@@ -1,6 +1,8 @@
 // MRF Compiler Website - Main TypeScript
 // Copyright (C) 2025, Shyamal Suhana Chandra
 import { QuantumCanvas, QuantumCircuitCanvas } from './canvas-effects';
+import { HeroCanvas } from './hero-canvas';
+import { PDFViewer, PDFCard } from './pdf-viewer';
 // Navigation toggle functionality
 function initNavigation() {
     const navToggle = document.getElementById('navToggle');
@@ -486,9 +488,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     initConfetti();
     initCanvasEffects();
+    initPDFViewer();
 });
 // Initialize enhanced Canvas effects
 function initCanvasEffects() {
+    // Initialize hero canvas
+    const heroCanvas = document.getElementById('hero-canvas');
+    if (heroCanvas) {
+        try {
+            new HeroCanvas('hero-canvas');
+        }
+        catch (err) {
+            console.warn('Could not initialize hero canvas:', err);
+        }
+    }
     // Initialize quantum particle canvas if element exists
     const quantumCanvas = document.getElementById('quantum-canvas');
     if (quantumCanvas) {
@@ -509,6 +522,35 @@ function initCanvasEffects() {
             console.warn('Could not initialize circuit canvas:', err);
         }
     }
+}
+// Initialize PDF viewer and cards
+function initPDFViewer() {
+    const pdfViewer = new PDFViewer();
+    const pdfCards = [];
+    // Find all PDF cards
+    const docCards = document.querySelectorAll('.doc-card[data-pdf-url]');
+    docCards.forEach((card) => {
+        const cardEl = card;
+        const pdfUrl = cardEl.getAttribute('data-pdf-url');
+        const pdfTitle = cardEl.getAttribute('data-pdf-title') || 'Document';
+        const pdfType = (cardEl.getAttribute('data-pdf-type') || 'paper');
+        if (pdfUrl) {
+            const iconMap = {
+                paper: '📄',
+                presentation: '📊',
+                reference: '📖'
+            };
+            const pdfInfo = {
+                title: pdfTitle,
+                description: '',
+                url: pdfUrl,
+                icon: iconMap[pdfType] || '📄',
+                type: pdfType
+            };
+            const pdfCard = new PDFCard(cardEl, pdfInfo, pdfViewer);
+            pdfCards.push(pdfCard);
+        }
+    });
 }
 // Make copyCode available globally for inline onclick handlers
 window.copyCode = function (button) {
