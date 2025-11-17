@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.10.11)  17 NOV 2025 12:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.10.11)  17 NOV 2025 13:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -613,27 +613,40 @@ pdftex.map}]
 er/cm-super-ts1.enc}]
 
 [3]
-Overfull \hbox (9.71788pt too wide) in paragraph at lines 174--175
+
+[4]
+
+[5]
+Overfull \hbox (9.71788pt too wide) in paragraph at lines 258--259
 []\OT1/cmr/bx/n/12 Quantum Ma-chine Learn-ing\OT1/cmr/m/n/12 : Var-i-ous frame-
 works have been de-vel-oped for quantum-
  []
 
 
 
-[4]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 206.
-
-
-[5]
-
 [6]
+Overfull \hbox (25.87149pt too wide) in paragraph at lines 288--289
+\OT1/cmr/m/n/12 For Bayesian Net-works, each node $\OML/cmm/m/it/12 X[]$ \OT1/c
+mr/m/n/12 has a Con-di-tional Prob-a-bil-ity Ta-ble (CPT) $\OML/cmm/m/it/12 P\O
+T1/cmr/m/n/12 (\OML/cmm/m/it/12 X[]\OMS/cmsy/m/n/12 j[]\OT1/cmr/m/n/12 (\OML/cm
+m/m/it/12 X[]\OT1/cmr/m/n/12 ))$
+ []
+
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 307.
+
 
 [7]
-LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 310.
 
-Overfull \hbox (4.96675pt too wide) in paragraph at lines 325--326
+[8]
+
+[9]
+
+[10]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 456.
+
+Overfull \hbox (4.96675pt too wide) in paragraph at lines 471--472
 []\OT1/cmr/m/n/12 Conversion func-tions: \OT1/cmtt/m/n/12 convertToMRF()\OT1/cm
 r/m/n/12 , \OT1/cmtt/m/n/12 moralizeGraph()\OT1/cmr/m/n/12 , \OT1/cmtt/m/n/12 f
 indMaximalCliques() 
@@ -641,8 +654,8 @@ indMaximalCliques()
 
 
 
-[8]
-Overfull \hbox (121.29832pt too wide) in paragraph at lines 357--357
+[11]
+Overfull \hbox (121.29832pt too wide) in paragraph at lines 503--503
 []\OT1/cmtt/m/n/12 Input File \TS1/cmtt/m/n/12 ^^Y \OT1/cmtt/m/n/12 Parser \TS1
 /cmtt/m/n/12 ^^Y \OT1/cmtt/m/n/12 GraphicalModel \TS1/cmtt/m/n/12 ^^Y \OT1/cmtt
 /m/n/12 MRF \TS1/cmtt/m/n/12 ^^Y \OT1/cmtt/m/n/12 QPU Circuit \TS1/cmtt/m/n/12 
@@ -652,65 +665,108 @@ Output Files[]
 
 
 
-[9]
+[12]
+Overfull \hbox (60.72234pt too wide) in paragraph at lines 605--606
+[]\OT1/cmr/bx/n/12 Ising En-cod-ing\OT1/cmr/m/n/12 : The clique po-ten-tial is 
+mapped to Ising pa-ram-e-ters $\OML/cmm/m/it/12 h[]; h[]; h[]; J[]; J[]; J[]$ 
+ []
+
+
+
+[13]
 (/usr/local/Cellar/texlive/20250308_1/share/texmf-dist/tex/latex/listings/lstla
 ng1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 439.
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 637.
 
 
-[10]
+[14]
 
-[11]
+[15]
 
-[12]
+[16]
 
-[13] (./_paper.aux)
+[17]
+
+[18]
+! You can't use `macro parameter character #' in horizontal mode.
+l.885 ...\item Partition function calculation is #
+                                                  P-complete
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+
+[19]
+
+[20]
+
+[21]
+Overfull \hbox (14.99947pt too wide) in paragraph at lines 1017--1018
+[]\OT1/cmr/m/n/12 We be-lieve that au-to-mated tools for bridg-ing clas-si-cal 
+and quan-tum com-put-ing paradigms
+ []
+
+
+
+[22]
+
+[23]
+
+[24] (./_paper.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `_paper.out' has not changed.
-(rerunfilecheck)             Checksum: 733AB8873DB5175ACD7A89E2C015B3FD;7361.
+(rerunfilecheck)             Checksum: F68F2611B22BA156874E841610BFCE09;8645.
  ) 
 Here is how much of TeX's memory you used:
- 14612 strings out of 473190
- 227707 string characters out of 5705897
- 833873 words of memory out of 5000000
- 37534 multiletter control sequences out of 15000+600000
- 569827 words of font info for 78 fonts, out of 8000000 for 9000
+ 14743 strings out of 473190
+ 229271 string characters out of 5705897
+ 842873 words of memory out of 5000000
+ 37593 multiletter control sequences out of 15000+600000
+ 570448 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,1237b,2156s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,10n,79p,1237b,2036s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/font
 s/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/Cellar/texlive/20250308_1/sha
-re/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/Cellar/tex
-live/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
-r/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmmi12.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmmi6.pfb></usr/local/Cellar/texlive/20250308_1/share/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/Cellar/texlive/2025
-0308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/Ce
-llar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/Cellar/texli
+ve/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr
+/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmex10.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi12.pfb></usr/local/Cellar/texlive/20250308_1/share/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/Cellar/texlive/2025
+0308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/Ce
+llar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.p
 fb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr17.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr6.pfb></usr/local/Cellar/texlive/20250308_1/share
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/Cellar/texlive/
-20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loc
-al/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy8.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmti12.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/Cellar/texlive/20250308
-_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/Cella
-r/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-</usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/cm-su
-per/sftt1200.pfb>
-Output written on _paper.pdf (13 pages, 265692 bytes).
+sfonts/cm/cmr12.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr17.pfb></usr/local/Cellar/texlive/20250308_1/shar
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/Cellar/texlive
+/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
+l/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy8.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/Cellar/texlive/20250308_
+1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/Cellar
+/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+</usr/local/Cellar/texlive/20250308_1/share/texmf-dist/fonts/type1/public/amsfo
+nts/symbols/msbm10.pfb></usr/local/Cellar/texlive/20250308_1/share/texmf-dist/f
+onts/type1/public/cm-super/sfrm1200.pfb></usr/local/Cellar/texlive/20250308_1/s
+hare/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
+Output written on _paper.pdf (24 pages, 314972 bytes).
 PDF statistics:
- 480 PDF objects out of 1000 (max. 8388607)
- 422 compressed objects within 5 object streams
- 153 named destinations out of 1000 (max. 500000)
- 361 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 629 PDF objects out of 1000 (max. 8388607)
+ 555 compressed objects within 6 object streams
+ 223 named destinations out of 1000 (max. 500000)
+ 409 words of extra memory for PDF output out of 10000 (max. 10000000)
 

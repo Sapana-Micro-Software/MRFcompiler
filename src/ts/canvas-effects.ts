@@ -53,21 +53,39 @@ export class QuantumCanvas {
     this.resizeCanvas();
     this.createParticles();
     this.setupEventListeners();
-    this.animate();
+    
+    // Wait for canvas to be fully ready
+    requestAnimationFrame(() => {
+      this.animate();
+    });
   }
 
   private resizeCanvas(): void {
+    if (!this.canvas) return;
+    
     const rect = this.canvas.getBoundingClientRect();
-    this.canvas.width = rect.width;
-    this.canvas.height = rect.height;
+    // Use device pixel ratio for crisp rendering on high-DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = rect.width * dpr;
+    this.canvas.height = rect.height * dpr;
+    
+    if (this.ctx) {
+      this.ctx.scale(dpr, dpr);
+      // Reset canvas style to maintain visual size
+      this.canvas.style.width = rect.width + 'px';
+      this.canvas.style.height = rect.height + 'px';
+    }
   }
 
   private createParticles(): void {
+    if (!this.canvas) return;
     this.particles = [];
+    const width = this.canvas.width / (window.devicePixelRatio || 1);
+    const height = this.canvas.height / (window.devicePixelRatio || 1);
     for (let i = 0; i < this.particleCount; i++) {
       this.particles.push({
-        x: Math.random() * this.canvas.width,
-        y: Math.random() * this.canvas.height,
+        x: Math.random() * width,
+        y: Math.random() * height,
         radius: Math.random() * 3 + 1,
         speedX: (Math.random() - 0.5) * 0.5,
         speedY: (Math.random() - 0.5) * 0.5,
@@ -133,6 +151,11 @@ export class QuantumCanvas {
   }
 
   private updateParticles(): void {
+    if (!this.canvas) return;
+    
+    const canvasWidth = this.canvas.width / (window.devicePixelRatio || 1);
+    const canvasHeight = this.canvas.height / (window.devicePixelRatio || 1);
+    
     this.particles.forEach((particle, index) => {
       // Update position
       particle.x += particle.speedX;
@@ -156,13 +179,13 @@ export class QuantumCanvas {
       }
 
       // Boundary collision
-      if (particle.x < 0 || particle.x > this.canvas.width) {
+      if (particle.x < 0 || particle.x > canvasWidth) {
         particle.speedX *= -1;
-        particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
+        particle.x = Math.max(0, Math.min(canvasWidth, particle.x));
       }
-      if (particle.y < 0 || particle.y > this.canvas.height) {
+      if (particle.y < 0 || particle.y > canvasHeight) {
         particle.speedY *= -1;
-        particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
+        particle.y = Math.max(0, Math.min(canvasHeight, particle.y));
       }
 
       // Damping
@@ -170,8 +193,8 @@ export class QuantumCanvas {
       particle.speedY *= 0.99;
 
       // Remove particles that are too far out
-      if (particle.x < -50 || particle.x > this.canvas.width + 50 ||
-          particle.y < -50 || particle.y > this.canvas.height + 50) {
+      if (particle.x < -50 || particle.x > canvasWidth + 50 ||
+          particle.y < -50 || particle.y > canvasHeight + 50) {
         if (this.particles.length > this.particleCount) {
           this.particles.splice(index, 1);
         }
@@ -188,9 +211,14 @@ export class QuantumCanvas {
   }
 
   private draw(): void {
+    if (!this.canvas || !this.ctx) return;
+    
+    const width = this.canvas.width / (window.devicePixelRatio || 1);
+    const height = this.canvas.height / (window.devicePixelRatio || 1);
+    
     // Clear with fade effect
     this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillRect(0, 0, width, height);
 
     // Draw waves
     this.waves.forEach(wave => {
@@ -255,6 +283,14 @@ export class QuantumCanvas {
   }
 
   private animate(): void {
+    if (!this.canvas || !this.ctx) {
+      if (this.animationId !== null) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+      }
+      return;
+    }
+    
     this.updateParticles();
     this.updateWaves();
     this.draw();
@@ -299,38 +335,92 @@ export class QuantumCircuitCanvas {
   private init(): void {
     this.resizeCanvas();
     this.generateRandomCircuit();
-    this.animate();
+    
+    // Wait for canvas to be fully ready
+    requestAnimationFrame(() => {
+      this.animate();
+    });
     
     window.addEventListener('resize', () => {
       this.resizeCanvas();
+      // Regenerate circuit on resize for better layout
+      this.generateRandomCircuit();
     });
   }
 
   private resizeCanvas(): void {
+    if (!this.canvas) return;
+    
     const rect = this.canvas.getBoundingClientRect();
-    this.canvas.width = rect.width;
-    this.canvas.height = rect.height;
+    // Use device pixel ratio for crisp rendering on high-DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = rect.width * dpr;
+    this.canvas.height = rect.height * dpr;
+    
+    if (this.ctx) {
+      this.ctx.scale(dpr, dpr);
+      // Reset canvas style to maintain visual size
+      this.canvas.style.width = rect.width + 'px';
+      this.canvas.style.height = rect.height + 'px';
+    }
   }
 
   private generateRandomCircuit(): void {
     this.gates = [];
-    const gateTypes = ['H', 'X', 'Y', 'Z', 'CNOT', 'CZ'];
+    const singleQubitGates = ['H', 'X', 'Y', 'Z', 'RY', 'RZ'];
+    const twoQubitGates = ['CNOT', 'CZ'];
     
-    for (let i = 0; i < 20; i++) {
+    // Generate a more realistic circuit with variety
+    let timeStep = 0;
+    for (let i = 0; i < 30; i++) {
+      let gateType: string;
+      let qubit: number;
+      
+      // 30% chance of two-qubit gate
+      if (Math.random() < 0.3 && this.qubits > 1) {
+        gateType = twoQubitGates[Math.floor(Math.random() * twoQubitGates.length)];
+        qubit = Math.floor(Math.random() * (this.qubits - 1)); // Control qubit
+      } else {
+        gateType = singleQubitGates[Math.floor(Math.random() * singleQubitGates.length)];
+        qubit = Math.floor(Math.random() * this.qubits);
+      }
+      
       this.gates.push({
-        type: gateTypes[Math.floor(Math.random() * gateTypes.length)],
-        qubit: Math.floor(Math.random() * this.qubits),
-        time: i * 2
+        type: gateType,
+        qubit: qubit,
+        time: timeStep
       });
+      
+      // Variable time steps for more realistic circuit
+      timeStep += Math.random() * 2 + 1;
     }
+    
+    // Sort gates by time for better visualization
+    this.gates.sort((a, b) => a.time - b.time);
   }
 
   private draw(): void {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (!this.canvas || !this.ctx) return;
+
+    const width = this.canvas.width / (window.devicePixelRatio || 1);
+    const height = this.canvas.height / (window.devicePixelRatio || 1);
+    
+    this.ctx.clearRect(0, 0, width, height);
 
     const padding = 40;
-    const qubitSpacing = (this.canvas.height - padding * 2) / (this.qubits - 1);
+    const qubitSpacing = (height - padding * 2) / Math.max(1, this.qubits - 1);
     const timeStep = 30;
+    
+    if (this.gates.length === 0) {
+      // Draw placeholder message if no gates
+      this.ctx.fillStyle = 'rgba(99, 102, 241, 0.5)';
+      this.ctx.font = '20px sans-serif';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText('Quantum Circuit Visualizer', width / 2, height / 2);
+      return;
+    }
+    
     const maxTime = Math.max(...this.gates.map(g => g.time)) + 5;
 
     // Draw qubit lines
@@ -338,7 +428,7 @@ export class QuantumCircuitCanvas {
       const y = padding + i * qubitSpacing;
       this.ctx.beginPath();
       this.ctx.moveTo(padding, y);
-      this.ctx.lineTo(this.canvas.width - padding, y);
+      this.ctx.lineTo(width - padding, y);
       this.ctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
       this.ctx.lineWidth = 2;
       this.ctx.stroke();
@@ -346,7 +436,7 @@ export class QuantumCircuitCanvas {
 
     // Draw gates
     this.gates.forEach(gate => {
-      const x = padding + (gate.time / maxTime) * (this.canvas.width - padding * 2);
+      const x = padding + (gate.time / maxTime) * (width - padding * 2);
       const y = padding + gate.qubit * qubitSpacing;
 
       // Gate glow
@@ -365,27 +455,81 @@ export class QuantumCircuitCanvas {
       
       // Gate label
       this.ctx.fillStyle = 'white';
-      this.ctx.font = 'bold 14px monospace';
+      this.ctx.font = 'bold 12px monospace';
       this.ctx.textAlign = 'center';
       this.ctx.textBaseline = 'middle';
       this.ctx.fillText(gate.type, x, y);
+      
+      // Draw connection lines for two-qubit gates
+      if (gate.type === 'CNOT' || gate.type === 'CZ') {
+        const targetQubit = Math.min(gate.qubit + 1, this.qubits - 1);
+        const targetY = padding + targetQubit * qubitSpacing;
+        
+        // Control dot (filled circle)
+        this.ctx.beginPath();
+        this.ctx.arc(x, y, 6, 0, Math.PI * 2);
+        this.ctx.fillStyle = '#ec4899';
+        this.ctx.fill();
+        
+        // Connection line (vertical)
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x, targetY);
+        this.ctx.strokeStyle = 'rgba(236, 72, 153, 0.6)';
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+        
+        // Target gate (circle for CNOT, filled for CZ)
+        if (gate.type === 'CNOT') {
+          this.ctx.beginPath();
+          this.ctx.arc(x, targetY, 10, 0, Math.PI * 2);
+          this.ctx.strokeStyle = '#ec4899';
+          this.ctx.lineWidth = 2;
+          this.ctx.stroke();
+          // Plus sign for CNOT
+          this.ctx.strokeStyle = '#ec4899';
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.moveTo(x - 5, targetY);
+          this.ctx.lineTo(x + 5, targetY);
+          this.ctx.moveTo(x, targetY - 5);
+          this.ctx.lineTo(x, targetY + 5);
+          this.ctx.stroke();
+        } else {
+          // CZ gate (filled circle)
+          this.ctx.beginPath();
+          this.ctx.arc(x, targetY, 8, 0, Math.PI * 2);
+          this.ctx.fillStyle = '#ec4899';
+          this.ctx.fill();
+        }
+      }
     });
 
     // Draw animation progress
-    const progressX = padding + (this.time / maxTime) * (this.canvas.width - padding * 2);
+    const progressX = padding + (this.time / maxTime) * (width - padding * 2);
     this.ctx.beginPath();
     this.ctx.moveTo(progressX, padding);
-    this.ctx.lineTo(progressX, this.canvas.height - padding);
+    this.ctx.lineTo(progressX, height - padding);
     this.ctx.strokeStyle = '#ec4899';
     this.ctx.lineWidth = 3;
     this.ctx.stroke();
   }
 
   private animate(): void {
+    if (!this.canvas || !this.ctx) {
+      if (this.animationId !== null) {
+        cancelAnimationFrame(this.animationId);
+        this.animationId = null;
+      }
+      return;
+    }
+    
     this.time += 0.1;
-    const maxTime = Math.max(...this.gates.map(g => g.time)) + 5;
-    if (this.time > maxTime) {
-      this.time = 0;
+    if (this.gates.length > 0) {
+      const maxTime = Math.max(...this.gates.map(g => g.time)) + 5;
+      if (this.time > maxTime) {
+        this.time = 0;
+      }
     }
     
     this.draw();
