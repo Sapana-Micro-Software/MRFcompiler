@@ -68,17 +68,58 @@ sudo make install</code></pre>
     <div class="tab-content" id="macos">
       <h2>macOS Installation</h2>
       
-      <h3>Prerequisites</h3>
+      <h3>Option 1: Using Homebrew (Recommended)</h3>
+      
+      <h4>Install Homebrew (if not already installed)</h4>
       <div class="code-block">
         <div class="code-header">
           <span class="code-lang">bash</span>
           <button class="copy-btn" onclick="copyCode(this)">Copy</button>
         </div>
-        <pre><code># Install Xcode Command Line Tools
+        <pre><code># Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+      </div>
+
+      <h4>Install Compiler via Homebrew</h4>
+      <p>Choose one of the following options:</p>
+      
+      <h5>Option A: LLVM (clang++)</h5>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code># Install LLVM via Homebrew
+brew install llvm
+
+# Verify installation
+/opt/homebrew/opt/llvm/bin/clang++ --version</code></pre>
+      </div>
+
+      <h5>Option B: GCC</h5>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code># Install GCC via Homebrew
+brew install gcc
+
+# Verify installation (version may vary: g++-13, g++-12, etc.)
+brew list gcc | grep bin/g++</code></pre>
+      </div>
+
+      <h3>Option 2: Using Xcode Command Line Tools</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code># Install Xcode Command Line Tools (includes Apple's clang)
 xcode-select --install
 
-# Or install via Homebrew
-brew install gcc make git</code></pre>
+# Verify installation
+clang++ --version</code></pre>
       </div>
 
       <h3>Build from Source</h3>
@@ -91,11 +132,50 @@ brew install gcc make git</code></pre>
 git clone https://github.com/Sapana-Micro-Software/MRFcompiler.git
 cd MRFcompiler
 
-# Build the compiler
+# Check which compiler will be used
+make check-compiler
+
+# Build the compiler (automatically detects Homebrew LLVM/GCC or system clang)
 make
 
 # Optional: Install to system path
-sudo make install</code></pre>
+sudo make install
+
+# Or install to Homebrew prefix (no sudo needed)
+make install INSTALL_PREFIX=/opt/homebrew</code></pre>
+      </div>
+
+      <h3>Verify Installation</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code># Test the compiler
+./mrf_compiler --help
+
+# Run a test
+make test</code></pre>
+      </div>
+
+      <h3>Troubleshooting</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code># If Homebrew LLVM is not detected, check installation path
+ls -la /opt/homebrew/opt/llvm/bin/clang++
+ls -la /usr/local/opt/llvm/bin/clang++
+
+# If Homebrew GCC is not detected, check available versions
+ls -la /opt/homebrew/bin/g++-*
+ls -la /usr/local/bin/g++-*
+
+# Force use of specific compiler
+make CXX=/opt/homebrew/opt/llvm/bin/clang++
+# or
+make CXX=/opt/homebrew/bin/g++-13</code></pre>
       </div>
     </div>
 

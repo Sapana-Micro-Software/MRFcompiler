@@ -98,11 +98,62 @@ make
 sudo make install
 \end{lstlisting}
 
+\subsubsection{macOS}
+
+The MRF Compiler supports macOS with both Homebrew LLVM (clang++) and GCC, as well as Apple's system clang.
+
+\textbf{Option 1: Using Homebrew LLVM (Recommended)}
+
+\begin{lstlisting}[language=bash]
+# Install Homebrew (if not already installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install LLVM
+brew install llvm
+
+# Clone and build
+git clone https://github.com/Sapana-Micro-Software/MRFcompiler.git
+cd MRFcompiler
+make check-compiler  # Verify compiler detection
+make
+\end{lstlisting}
+
+\textbf{Option 2: Using Homebrew GCC}
+
+\begin{lstlisting}[language=bash]
+# Install GCC via Homebrew
+brew install gcc
+
+# Clone and build
+git clone https://github.com/Sapana-Micro-Software/MRFcompiler.git
+cd MRFcompiler
+make
+\end{lstlisting}
+
+\textbf{Option 3: Using Xcode Command Line Tools}
+
+\begin{lstlisting}[language=bash]
+# Install Xcode Command Line Tools
+xcode-select --install
+
+# Clone and build
+git clone https://github.com/Sapana-Micro-Software/MRFcompiler.git
+cd MRFcompiler
+make
+\end{lstlisting}
+
+The Makefile automatically detects and uses the best available compiler:
+\begin{itemize}
+    \item Homebrew LLVM (if installed at \texttt{/opt/homebrew/opt/llvm} or \texttt{/usr/local/opt/llvm})
+    \item Homebrew GCC (if installed, checks for g++-13, g++-12, g++-11)
+    \item System clang (Apple's LLVM) as fallback
+\end{itemize}
+
 \subsubsection{Windows}
 
 \begin{lstlisting}[language=bash]
 # Using MinGW or MSYS2
-git clone https://github.com/shyamalchandra/MRFcompiler.git
+git clone https://github.com/Sapana-Micro-Software/MRFcompiler.git
 cd MRFcompiler
 mingw32-make
 
