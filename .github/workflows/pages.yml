@@ -6,6 +6,10 @@ on:
       - main
       - master
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - master
 
 permissions:
   contents: read
@@ -22,13 +26,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
           bundler-cache: true
-          cache-version: 0
+          cache-version: 1
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -36,18 +42,37 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: |
-          npm install
-          bundle install
+      - name: Install npm dependencies
+        run: npm ci
 
-      - name: Build TypeScript
-        run: npm run build
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Compile TypeScript
+        run: npx tsc
+        continue-on-error: false
+
+      - name: Verify TypeScript compilation
+        run: |
+          if [ ! -f "assets/js/main.js" ]; then
+            echo "❌ TypeScript compilation failed - main.js not found"
+            exit 1
+          fi
+          echo "✅ TypeScript compiled successfully"
 
       - name: Build Jekyll site
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
+
+      - name: Verify Jekyll build
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "❌ Jekyll build failed - _site directory not found"
+            exit 1
+          fi
+          echo "✅ Jekyll build successful"
+          echo "📦 Site size: $(du -sh _site | cut -f1)"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -63,7 +88,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deployment status
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "📄 Site URL: ${{ steps.deployment.outputs.page_url }}"

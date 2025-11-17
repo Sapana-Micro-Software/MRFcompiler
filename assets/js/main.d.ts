@@ -1,0 +1,17 @@
+declare function initNavigation(): void;
+declare function initCodeCopy(): void;
+declare function initInstallationTabs(): void;
+declare function initSmoothScroll(): void;
+declare function initScrollAnimations(): void;
+declare function initDarkMode(): void;
+declare function updateThemeIcon(theme: string): void;
+declare function initParallax(): void;
+declare function initNavbarScroll(): void;
+declare function initScrollIndicator(): void;
+declare function initParticles(): void;
+declare function initScrollProgress(): void;
+declare function initStaggeredAnimations(): void;
+declare function initCursorTrail(): void;
+declare function initConfetti(): void;
+declare function createConfetti(e: MouseEvent): void;
+//# sourceMappingURL=main.d.ts.map
