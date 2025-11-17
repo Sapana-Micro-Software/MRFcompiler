@@ -26,9 +26,9 @@ exclude:
   - .git
   - .gitignore
   - Makefile
-  - *.cpp
-  - *.h
-  - *.o
+  - "*.cpp"
+  - "*.h"
+  - "*.o"
   - mrf_compiler
 
 # Collections
