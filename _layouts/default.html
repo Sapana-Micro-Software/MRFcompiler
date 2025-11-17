@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{ page.description | default: site.description }}">
   <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
+  <link rel="icon" type="image/x-icon" href="{{ site.baseurl }}/assets/images/favicon.ico">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-brand">
-        <a href="/">
+        <a href="{{ site.baseurl }}/">
           <span class="brand-icon">⚛️</span>
           <span class="brand-text">MRF Compiler</span>
         </a>
       </div>
       <ul class="nav-menu" id="navMenu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/installation">Installation</a></li>
-        <li><a href="/docs">Documentation</a></li>
-        <li><a href="/examples">Examples</a></li>
+        <li><a href="{{ site.baseurl }}/">Home</a></li>
+        <li><a href="{{ site.baseurl }}/installation">Installation</a></li>
+        <li><a href="{{ site.baseurl }}/docs">Documentation</a></li>
+        <li><a href="{{ site.baseurl }}/examples">Examples</a></li>
         <li><a href="https://github.com/shyamalchandra/MRFcompiler" target="_blank">GitHub</a></li>
       </ul>
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -59,17 +59,17 @@
         <div class="footer-section">
           <h4>Links</h4>
           <ul>
-            <li><a href="/installation">Installation</a></li>
-            <li><a href="/docs">Documentation</a></li>
-            <li><a href="/examples">Examples</a></li>
+            <li><a href="{{ site.baseurl }}/installation">Installation</a></li>
+            <li><a href="{{ site.baseurl }}/docs">Documentation</a></li>
+            <li><a href="{{ site.baseurl }}/examples">Examples</a></li>
           </ul>
         </div>
         <div class="footer-section">
           <h4>Resources</h4>
           <ul>
-            <li><a href="/docs/paper.pdf">Research Paper</a></li>
-            <li><a href="/docs/presentation.pdf">Presentation</a></li>
-            <li><a href="/docs/reference.pdf">Reference Manual</a></li>
+            <li><a href="{{ site.baseurl }}/docs/paper.pdf">Research Paper</a></li>
+            <li><a href="{{ site.baseurl }}/docs/presentation.pdf">Presentation</a></li>
+            <li><a href="{{ site.baseurl }}/docs/reference.pdf">Reference Manual</a></li>
           </ul>
         </div>
         <div class="footer-section">
@@ -86,6 +86,6 @@
     </div>
   </footer>
 
-  <script src="/assets/js/main.js"></script>
+  <script src="{{ site.baseurl }}/assets/js/main.js"></script>
 </body>
 </html>
