@@ -30,6 +30,13 @@ exclude:
   - "*.h"
   - "*.o"
   - mrf_compiler
+  - "docs/_*.tex"
+  - "docs/_*.log"
+  - "docs/_*.aux"
+  - "docs/_*.out"
+  - "docs/_*.toc"
+  - "docs/_*.nav"
+  - "docs/_*.snm"
 
 # Collections
 collections:
