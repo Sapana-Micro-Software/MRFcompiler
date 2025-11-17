@@ -1,6 +1,6 @@
-"use strict";
 // MRF Compiler Website - Main TypeScript
 // Copyright (C) 2025, Shyamal Suhana Chandra
+import { QuantumCanvas, QuantumCircuitCanvas } from './canvas-effects';
 // Navigation toggle functionality
 function initNavigation() {
     const navToggle = document.getElementById('navToggle');
@@ -485,7 +485,31 @@ document.addEventListener('DOMContentLoaded', () => {
         initCursorTrail();
     }
     initConfetti();
+    initCanvasEffects();
 });
+// Initialize enhanced Canvas effects
+function initCanvasEffects() {
+    // Initialize quantum particle canvas if element exists
+    const quantumCanvas = document.getElementById('quantum-canvas');
+    if (quantumCanvas) {
+        try {
+            new QuantumCanvas('quantum-canvas');
+        }
+        catch (err) {
+            console.warn('Could not initialize quantum canvas:', err);
+        }
+    }
+    // Initialize quantum circuit canvas if element exists
+    const circuitCanvas = document.getElementById('circuit-canvas');
+    if (circuitCanvas) {
+        try {
+            new QuantumCircuitCanvas('circuit-canvas');
+        }
+        catch (err) {
+            console.warn('Could not initialize circuit canvas:', err);
+        }
+    }
+}
 // Make copyCode available globally for inline onclick handlers
 window.copyCode = function (button) {
     const codeBlock = button.closest('.code-block');

@@ -54,11 +54,18 @@ jobs:
 
       - name: Verify TypeScript compilation
         run: |
+          echo "🔍 Verifying TypeScript compilation..."
           if [ ! -f "assets/js/main.js" ]; then
             echo "❌ TypeScript compilation failed - main.js not found"
             exit 1
           fi
+          if [ ! -f "assets/js/canvas-effects.js" ]; then
+            echo "❌ TypeScript compilation failed - canvas-effects.js not found"
+            exit 1
+          fi
           echo "✅ TypeScript compiled successfully"
+          echo "📦 Compiled files:"
+          ls -lh assets/js/*.js | awk '{print "  - " $9 " (" $5 ")"}'
 
       - name: Build Jekyll site
         run: bundle exec jekyll build
@@ -86,6 +93,11 @@ jobs:
             echo "⚠️  Warning: main.js not found - TypeScript may not have compiled"
           else
             echo "✅ main.js found"
+          fi
+          if [ ! -f "_site/assets/js/canvas-effects.js" ]; then
+            echo "⚠️  Warning: canvas-effects.js not found - Canvas effects may not work"
+          else
+            echo "✅ canvas-effects.js found"
           fi
           echo "📄 Files in _site: $(find _site -type f | wc -l)"
 
