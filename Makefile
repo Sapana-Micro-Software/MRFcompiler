@@ -16,12 +16,12 @@ ifeq ($(UNAME_S),Darwin)
     # Check for Homebrew LLVM (clang)
     ifneq ($(wildcard /opt/homebrew/opt/llvm/bin/clang++),)
         CXX = /opt/homebrew/opt/llvm/bin/clang++
-        CXXFLAGS += -I/opt/homebrew/opt/llvm/include -L/opt/homebrew/opt/llvm/lib
+        CXXFLAGS += -I/opt/homebrew/opt/llvm/include
         LDFLAGS = -L/opt/homebrew/opt/llvm/lib
     # Check for Homebrew LLVM in Intel location
     else ifneq ($(wildcard /usr/local/opt/llvm/bin/clang++),)
         CXX = /usr/local/opt/llvm/bin/clang++
-        CXXFLAGS += -I/usr/local/opt/llvm/include -L/usr/local/opt/llvm/lib
+        CXXFLAGS += -I/usr/local/opt/llvm/include
         LDFLAGS = -L/usr/local/opt/llvm/lib
     # Check for Homebrew GCC
     else ifneq ($(wildcard /opt/homebrew/bin/g++-13),)
