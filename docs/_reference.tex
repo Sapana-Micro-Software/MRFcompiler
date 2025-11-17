@@ -8,6 +8,29 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{longtable}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{verbatim}
+
+\geometry{margin=1in}
+
+% Code listing style
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    showstringspaces=false
+}
 
 \title{MRF Compiler Reference Manual}
 \author{Shyamal Suhana Chandra}
@@ -21,17 +44,95 @@
 
 \section{Introduction}
 
-This reference manual provides complete documentation for the MRF Compiler, including command-line options, input formats, API reference, and framework-specific details.
+This reference manual provides complete documentation for the MRF Compiler, a comprehensive tool for converting probabilistic graphical models into Markov Random Fields (MRF) and subsequently into quantum circuit representations. The compiler supports multiple quantum computing frameworks and provides a flexible command-line interface for easy integration into existing workflows.
+
+\subsection{Purpose}
+
+The MRF Compiler bridges the gap between classical probabilistic modeling and quantum computing, enabling researchers and practitioners to:
+\begin{itemize}
+    \item Convert graphical models to quantum circuits automatically
+    \item Export to multiple quantum computing frameworks
+    \item Leverage quantum algorithms for probabilistic inference
+    \item Integrate quantum computing into existing machine learning pipelines
+\end{itemize}
+
+\subsection{Scope}
+
+This manual covers:
+\begin{itemize}
+    \item Installation and setup procedures
+    \item Command-line interface and options
+    \item Input file format specifications
+    \item Output format details for each framework
+    \item API reference for programmatic usage
+    \item Framework-specific integration guides
+    \item Examples and use cases
+    \item Troubleshooting and common issues
+\end{itemize}
+
+\section{Installation}
+
+\subsection{System Requirements}
+
+\begin{itemize}
+    \item \textbf{Operating System}: Linux, macOS, or Windows (with WSL or MinGW)
+    \item \textbf{Compiler}: C++17 compatible compiler (GCC 7+, Clang 5+, or MSVC 2017+)
+    \item \textbf{Build System}: Make
+    \item \textbf{Memory}: Minimum 512MB RAM (2GB recommended for large graphs)
+    \item \textbf{Disk Space}: 50MB for installation
+\end{itemize}
+
+\subsection{Building from Source}
+
+\subsubsection{Linux/macOS}
+
+\begin{lstlisting}[language=bash]
+# Clone the repository
+git clone https://github.com/shyamalchandra/MRFcompiler.git
+cd MRFcompiler
+
+# Build the compiler
+make
+
+# Optional: Install system-wide
+sudo make install
+\end{lstlisting}
+
+\subsubsection{Windows}
+
+\begin{lstlisting}[language=bash]
+# Using MinGW or MSYS2
+git clone https://github.com/shyamalchandra/MRFcompiler.git
+cd MRFcompiler
+mingw32-make
+
+# Or using Visual Studio
+# Open the project in Visual Studio and build
+\end{lstlisting}
+
+\subsection{Verification}
+
+After building, verify the installation:
+
+\begin{lstlisting}[language=bash]
+./mrf_compiler --help
+\end{lstlisting}
+
+You should see the help message with available options.
 
 \section{Command-Line Interface}
 
 \subsection{Basic Usage}
 
-\verb|./mrf_compiler [options] [input_file] [output_file]|
+The basic command syntax is:
 
-\subsection{Options}
+\begin{verbatim}
+./mrf_compiler [options] [input_file] [output_file]
+\end{verbatim}
 
-\begin{longtable}{|p{3cm}|p{10cm}|}
+\subsection{Command-Line Options}
+
+\begin{longtable}{|p{3cm}|p{11cm}|}
 \hline
 \textbf{Option} & \textbf{Description} \\
 \hline
@@ -40,24 +141,576 @@ This reference manual provides complete documentation for the MRF Compiler, incl
 \textbf{Option} & \textbf{Description} \\
 \hline
 \endhead
-\verb|-f, --framework| & Specify output framework (qasm, qiskit, cirq, pennylane, qsharp, braket, qulacs, tfq) \\
+\verb|-f, --framework <name>| & Specify output framework. Supported values: \texttt{qasm}, \texttt{qiskit}, \texttt{cirq}, \texttt{pennylane}, \texttt{qsharp}, \texttt{braket}, \texttt{qulacs}, \texttt{tfq}. Default: \texttt{qasm} \\
 \hline
-\verb|-a, --all| & Export to all supported frameworks \\
+\verb|-a, --all| & Export to all supported frameworks. Creates multiple output files with framework-specific extensions. \\
 \hline
-\verb|-h, --help| & Display help message \\
+\verb|-h, --help| & Display help message with usage information and available options. \\
+\hline
+\verb|-v, --verbose| & Enable verbose output, showing detailed conversion steps and debugging information. \\
+\hline
+\verb|-o, --output <file>| & Specify output file path. If not provided, output is written to stdout or a default filename based on input. \\
 \hline
 \end{longtable}
 
+\subsection{Examples}
+
+\subsubsection{Basic Usage}
+
+\begin{lstlisting}[language=bash]
+# Convert to OpenQASM (default)
+./mrf_compiler example.txt output.qasm
+
+# Convert to Qiskit
+./mrf_compiler -f qiskit example.txt circuit.py
+
+# Convert to Cirq
+./mrf_compiler -f cirq example.txt circuit.py
+\end{lstlisting}
+
+\subsubsection{Export to All Frameworks}
+
+\begin{lstlisting}[language=bash]
+# Generate output for all frameworks
+./mrf_compiler -a example.txt
+
+# This creates:
+# - output_qasm.qasm
+# - output_qiskit.py
+# - output_cirq.py
+# - output_pennylane.py
+# - output_qsharp.qs
+# - output_braket.py
+# - output_qulacs.py
+# - output_tfq.py
+\end{lstlisting}
+
+\subsubsection{Verbose Mode}
+
+\begin{lstlisting}[language=bash]
+# Get detailed conversion information
+./mrf_compiler -v -f qiskit example.txt circuit.py
+\end{lstlisting}
+
 \section{Input Format}
+
+\subsection{File Structure}
+
+The input file is a plain text file with a simple line-based format. Each line specifies either the graph type, a node, or an edge.
+
+\subsection{Graph Type Declaration}
+
+The first line must specify the graph type:
+
+\begin{verbatim}
+TYPE directed
+\end{verbatim}
+
+or
+
+\begin{verbatim}
+TYPE undirected
+\end{verbatim}
+
+\subsection{Node Declaration}
+
+Nodes are declared with the following syntax:
+
+\begin{verbatim}
+NODE <id> <name> [num_states]
+\end{verbatim}
+
+\begin{itemize}
+    \item \texttt{<id>}: Unique integer identifier for the node (starting from 0)
+    \item \texttt{<name>}: Alphanumeric name for the node
+    \item \texttt{[num_states]}: Optional number of states (default: 2 for binary)
+\end{itemize}
+
+\subsection{Edge Declaration}
+
+Edges are declared with the following syntax:
+
+\begin{verbatim}
+EDGE <from> <to> [directed]
+\end{verbatim}
+
+\begin{itemize}
+    \item \texttt{<from>}: Source node ID
+    \item \texttt{<to>}: Target node ID
+    \item \texttt{[directed]}: Optional flag (only relevant for undirected graphs, ignored for directed)
+\end{itemize}
+
+\subsection{Complete Example}
+
+\begin{verbatim}
+TYPE undirected
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+NODE 3 D 2
+EDGE 0 1
+EDGE 1 2
+EDGE 2 3
+EDGE 0 3
+\end{verbatim}
+
+This creates a 4-node undirected graph forming a square (cycle).
+
+\subsection{Directed Graph Example}
+
+\begin{verbatim}
+TYPE directed
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 0 2
+EDGE 1 2
+\end{verbatim}
+
+This creates a directed graph where A is a parent of both B and C, and B is a parent of C.
 
 \section{Output Formats}
 
+\subsection{OpenQASM 2.0}
+
+OpenQASM is the standard quantum assembly language. The output is a text file that can be used with any OpenQASM-compatible quantum simulator or hardware.
+
+\textbf{File Extension}: \texttt{.qasm}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=]
+OPENQASM 2.0;
+include "qelib1.inc";
+
+qreg q[3];
+creg c[3];
+
+h q[0];
+h q[1];
+h q[2];
+cx q[0], q[1];
+rz(0.5) q[1];
+cx q[0], q[1];
+\end{lstlisting}
+
+\subsection{Qiskit}
+
+Qiskit is IBM's quantum computing framework. The output is a Python file with a function that returns a \texttt{QuantumCircuit} object.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+from qiskit import QuantumCircuit
+
+def create_circuit():
+    qc = QuantumCircuit(3, 3)
+    qc.h(0)
+    qc.h(1)
+    qc.h(2)
+    qc.cx(0, 1)
+    qc.rz(0.5, 1)
+    qc.cx(0, 1)
+    return qc
+
+if __name__ == "__main__":
+    circuit = create_circuit()
+    circuit.draw(output='mpl')
+\end{lstlisting}
+
+\subsection{Cirq}
+
+Cirq is Google's quantum computing framework. The output is a Python file with a function that returns a \texttt{cirq.Circuit} object.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+import cirq
+
+def create_circuit():
+    qubits = [cirq.GridQubit(0, i) for i in range(3)]
+    circuit = cirq.Circuit()
+    circuit.append([cirq.H(qubits[i]) for i in range(3)])
+    circuit.append(cirq.CNOT(qubits[0], qubits[1]))
+    circuit.append(cirq.rz(0.5)(qubits[1]))
+    circuit.append(cirq.CNOT(qubits[0], qubits[1]))
+    return circuit
+\end{lstlisting}
+
+\subsection{PennyLane}
+
+PennyLane is Xanadu's quantum machine learning library. The output is a Python file with a QNode-decorated function.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+import pennylane as qml
+
+dev = qml.device('default.qubit', wires=3)
+
+@qml.qnode(dev)
+def circuit():
+    qml.Hadamard(wires=0)
+    qml.Hadamard(wires=1)
+    qml.Hadamard(wires=2)
+    qml.CNOT(wires=[0, 1])
+    qml.RZ(0.5, wires=1)
+    qml.CNOT(wires=[0, 1])
+    return qml.state()
+\end{lstlisting}
+
+\subsection{Q\#}
+
+Q\# is Microsoft's quantum programming language. The output is a Q\# source file with an operation.
+
+\textbf{File Extension}: \texttt{.qs}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=]
+namespace MRFCircuit {
+    open Microsoft.Quantum.Intrinsic;
+    open Microsoft.Quantum.Math;
+
+    operation CreateCircuit() : Unit {
+        using (qubits = Qubit[3]) {
+            H(qubits[0]);
+            H(qubits[1]);
+            H(qubits[2]);
+            CNOT(qubits[0], qubits[1]);
+            Rz(0.5, qubits[1]);
+            CNOT(qubits[0], qubits[1]);
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{AWS Braket}
+
+AWS Braket is Amazon's quantum computing service. The output is a Python file with a function that returns a \texttt{braket.Circuit} object.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+from braket.circuits import Circuit
+
+def create_circuit():
+    circuit = Circuit()
+    circuit.h(0)
+    circuit.h(1)
+    circuit.h(2)
+    circuit.cnot(0, 1)
+    circuit.rz(1, 0.5)
+    circuit.cnot(0, 1)
+    return circuit
+\end{lstlisting}
+
+\subsection{Qulacs}
+
+Qulacs is a fast quantum circuit simulator. The output is a Python file with a function that returns a \texttt{qulacs.QuantumCircuit} object.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+from qulacs import QuantumCircuit
+
+def create_circuit():
+    circuit = QuantumCircuit(3)
+    circuit.add_H_gate(0)
+    circuit.add_H_gate(1)
+    circuit.add_H_gate(2)
+    circuit.add_CNOT_gate(0, 1)
+    circuit.add_RZ_gate(1, 0.5)
+    circuit.add_CNOT_gate(0, 1)
+    return circuit
+\end{lstlisting}
+
+\subsection{TensorFlow Quantum}
+
+TensorFlow Quantum is Google's quantum machine learning framework. The output is a Python file that creates a tensor representation.
+
+\textbf{File Extension}: \texttt{.py}
+
+\textbf{Example Output}:
+
+\begin{lstlisting}[language=Python]
+import tensorflow_quantum as tfq
+import cirq
+
+def create_circuit():
+    qubits = [cirq.GridQubit(0, i) for i in range(3)]
+    circuit = cirq.Circuit()
+    circuit.append([cirq.H(qubits[i]) for i in range(3)])
+    circuit.append(cirq.CNOT(qubits[0], qubits[1]))
+    circuit.append(cirq.rz(0.5)(qubits[1]))
+    circuit.append(cirq.CNOT(qubits[0], qubits[1]))
+    return tfq.convert_to_tensor([circuit])
+\end{lstlisting}
+
 \section{API Reference}
 
-\section{Framework Details}
+\subsection{Graph Module}
+
+\subsubsection{GraphicalModel Class}
+
+The \texttt{GraphicalModel} class represents a probabilistic graphical model.
+
+\textbf{Methods}:
+
+\begin{itemize}
+    \item \texttt{void addNode(int id, const std::string\& name, int num\_states = 2)}: Add a node to the graph
+    \item \texttt{void addEdge(int from, int to, bool directed = true)}: Add an edge between nodes
+    \item \texttt{Node* getNode(int id)}: Get a node by ID
+    \item \texttt{Edge* getEdge(int from, int to)}: Get an edge between two nodes
+    \item \texttt{std::vector<int> getNeighbors(int node\_id) const}: Get all neighbors of a node
+    \item \texttt{bool hasEdge(int from, int to) const}: Check if an edge exists
+    \item \texttt{void print() const}: Print the graph structure
+\end{itemize}
+
+\subsection{MRF Module}
+
+\subsubsection{MRF Class}
+
+The \texttt{MRF} class represents a Markov Random Field.
+
+\textbf{Methods}:
+
+\begin{itemize}
+    \item \texttt{void addNode(int id, const std::string\& name, int num\_states = 2)}: Add a node
+    \item \texttt{void addClique(const std::vector<int>\& nodes)}: Add a clique
+    \item \texttt{void setCliquePotential(int clique\_idx, const std::vector<double>\& potential)}: Set clique potential
+    \item \texttt{void print() const}: Print the MRF structure
+    \item \texttt{int getTotalStates() const}: Get total number of states
+\end{itemize}
+
+\subsubsection{Conversion Functions}
+
+\begin{itemize}
+    \item \texttt{MRF convertToMRF(const GraphicalModel\& gm)}: Convert graphical model to MRF
+    \item \texttt{void moralizeGraph(GraphicalModel\& gm)}: Moralize a directed graph
+    \item \texttt{std::vector<Clique> findMaximalCliques(const GraphicalModel\& gm)}: Find all maximal cliques
+\end{itemize}
+
+\section{Framework Integration}
+
+\subsection{Qiskit Integration}
+
+After generating a Qiskit circuit:
+
+\begin{lstlisting}[language=Python]
+from output_qiskit import create_circuit
+from qiskit import Aer, execute
+
+circuit = create_circuit()
+backend = Aer.get_backend('qasm_simulator')
+job = execute(circuit, backend, shots=1000)
+result = job.result()
+counts = result.get_counts(circuit)
+print(counts)
+\end{lstlisting}
+
+\subsection{Cirq Integration}
+
+After generating a Cirq circuit:
+
+\begin{lstlisting}[language=Python]
+from output_cirq import create_circuit
+import cirq
+
+circuit = create_circuit()
+simulator = cirq.Simulator()
+result = simulator.simulate(circuit)
+print(result)
+\end{lstlisting}
+
+\subsection{PennyLane Integration}
+
+After generating a PennyLane circuit:
+
+\begin{lstlisting}[language=Python]
+from output_pennylane import circuit
+import pennylane as qml
+
+result = circuit()
+print(result)
+\end{lstlisting}
 
 \section{Examples}
 
+\subsection{Example 1: Simple Chain Graph}
+
+\textbf{Input} (\texttt{chain.txt}):
+
+\begin{verbatim}
+TYPE undirected
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 1 2
+\end{verbatim}
+
+\textbf{Command}:
+
+\begin{verbatim}
+./mrf_compiler -f qiskit chain.txt chain_circuit.py
+\end{verbatim}
+
+\subsection{Example 2: Directed Graph with Moralization}
+
+\textbf{Input} (\texttt{directed.txt}):
+
+\begin{verbatim}
+TYPE directed
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 0 2
+\end{verbatim}
+
+This creates a v-structure that requires moralization (adding edge between B and C).
+
+\textbf{Command}:
+
+\begin{verbatim}
+./mrf_compiler -f cirq directed.txt directed_circuit.py
+\end{verbatim}
+
+\subsection{Example 3: Export to All Frameworks}
+
+\textbf{Command}:
+
+\begin{verbatim}
+./mrf_compiler -a example.txt
+\end{verbatim}
+
+This generates output files for all 8 supported frameworks.
+
 \section{Troubleshooting}
+
+\subsection{Common Issues}
+
+\subsubsection{Compilation Errors}
+
+\textbf{Problem}: Build fails with compilation errors.
+
+\textbf{Solution}: Ensure you have a C++17 compatible compiler. Update your compiler or use a newer version.
+
+\subsubsection{File Not Found}
+
+\textbf{Problem}: \texttt{./mrf\_compiler: No such file or directory}
+
+\textbf{Solution}: Ensure you're in the correct directory and the build completed successfully. Run \texttt{make} again.
+
+\subsubsection{Invalid Input Format}
+
+\textbf{Problem}: Error parsing input file.
+
+\textbf{Solution}: Check that your input file follows the correct format:
+\begin{itemize}
+    \item First line must be \texttt{TYPE directed} or \texttt{TYPE undirected}
+    \item Node IDs must be unique integers starting from 0
+    \item Edge node IDs must reference existing nodes
+\end{itemize}
+
+\subsubsection{Framework Import Errors}
+
+\textbf{Problem}: Generated Python files fail to import framework modules.
+
+\textbf{Solution}: Install the required framework:
+
+\begin{lstlisting}[language=bash]
+pip install qiskit        # For Qiskit
+pip install cirq         # For Cirq
+pip install pennylane    # For PennyLane
+pip install amazon-braket-sdk  # For AWS Braket
+pip install qulacs        # For Qulacs
+pip install tensorflow-quantum  # For TensorFlow Quantum
+\end{lstlisting}
+
+\subsubsection{Large Graph Performance}
+
+\textbf{Problem}: Compilation is slow for large graphs.
+
+\textbf{Solution}: 
+\begin{itemize}
+    \item Clique finding is exponential in worst case
+    \item Consider using smaller graphs or approximate methods
+    \item Increase available memory
+    \item Use verbose mode to identify bottlenecks
+\end{itemize}
+
+\section{Advanced Usage}
+
+\subsection{Custom Potential Functions}
+
+While the current version uses default potential functions, future versions will support custom potential specifications in the input file.
+
+\subsection{Circuit Optimization}
+
+The generated circuits are basic representations. For production use, consider:
+\begin{itemize}
+    \item Gate optimization using framework-specific tools
+    \item Circuit compilation for specific hardware
+    \item Noise-aware compilation for NISQ devices
+\end{itemize}
+
+\subsection{Performance Considerations}
+
+\begin{itemize}
+    \item \textbf{Graph Size}: Performance degrades with graph size, especially for dense graphs
+    \item \textbf{Clique Count}: Graphs with many maximal cliques take longer to process
+    \item \textbf{Output Format}: Some frameworks generate more verbose output than others
+\end{itemize}
+
+\section{Best Practices}
+
+\begin{enumerate}
+    \item \textbf{Start Small}: Test with small graphs before scaling up
+    \item \textbf{Verify Output}: Always check generated circuits for correctness
+    \item \textbf{Use Version Control}: Keep input files and generated outputs in version control
+    \item \textbf{Document Models}: Add comments to input files describing the model structure
+    \item \textbf{Test Multiple Frameworks}: Compare outputs across different frameworks
+    \item \textbf{Optimize Circuits}: Use framework-specific optimization tools after generation
+\end{enumerate}
+
+\section{Contributing}
+
+The MRF Compiler is an open-source project. Contributions are welcome! Areas for contribution include:
+\begin{itemize}
+    \item Additional framework support
+    \item Performance optimizations
+    \item Extended input format support
+    \item Documentation improvements
+    \item Bug fixes and testing
+\end{itemize}
+
+\section{License}
+
+Copyright (C) 2025, Shyamal Suhana Chandra
+
+This software is provided as-is for educational and research purposes.
+
+\section{References}
+
+\begin{itemize}
+    \item Qiskit Documentation: \url{https://qiskit.org/documentation/}
+    \item Cirq Documentation: \url{https://quantumai.google/cirq}
+    \item PennyLane Documentation: \url{https://pennylane.ai/}
+    \item Q\# Documentation: \url{https://docs.microsoft.com/azure/quantum/}
+    \item AWS Braket Documentation: \url{https://docs.aws.amazon.com/braket/}
+\end{itemize}
 
 \end{document}

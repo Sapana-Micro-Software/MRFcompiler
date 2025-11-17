@@ -6,9 +6,24 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \usetheme{Madrid}
 \usecolortheme{default}
+
+% Code listing style
+\lstset{
+    language=bash,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2
+}
 
 \title[MRF Compiler]{MRF Compiler}
 \subtitle{Converting Graphical Models to Quantum Circuits}
@@ -23,24 +38,144 @@
 \begin{frame}
 \frametitle{Overview}
 \begin{itemize}
-\item Convert graphical models to MRF
-\item Generate quantum circuits
-\item Support for 8+ quantum frameworks
-\item Open source implementation
+\item \textbf{Problem}: Bridge classical probabilistic models and quantum computing
+\item \textbf{Solution}: Automated conversion from graphical models to quantum circuits
+\item \textbf{Support}: 8+ major quantum computing frameworks
+\item \textbf{Implementation}: High-performance C++ compiler
+\item \textbf{Status}: Open source, actively developed
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Motivation}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Classical Side}
+\begin{itemize}
+\item Probabilistic Graphical Models
+\item Bayesian Networks
+\item Markov Random Fields
+\item Inference challenges
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{Quantum Side}
+\begin{itemize}
+\item Quantum algorithms
+\item Superposition \& Entanglement
+\item Potential speedups
+\item Framework diversity
+\end{itemize}
+\end{columns}
+\vspace{1em}
+\textbf{Challenge}: Manual conversion is error-prone and time-consuming
+\end{frame}
+
+\begin{frame}
+\frametitle{What is MRF Compiler?}
+\begin{block}{Definition}
+A comprehensive framework that automatically converts probabilistic graphical models (directed or undirected) into Markov Random Fields and subsequently into quantum circuit representations compatible with multiple quantum computing frameworks.
+\end{block}
+\begin{itemize}
+\item \textbf{Input}: Text-based graphical model specification
+\item \textbf{Processing}: Automatic moralization, clique finding, Ising encoding
+\item \textbf{Output}: Framework-specific quantum circuit code
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Key Features}
+\begin{enumerate}
+\item \textbf{Graph Support}: Both directed and undirected graphs
+\item \textbf{Automatic Conversion}: Moralization for directed graphs
+\item \textbf{Clique Finding}: Efficient maximal clique identification
+\item \textbf{Ising Encoding}: MRF to quantum Hamiltonian mapping
+\item \textbf{Multi-Framework}: Export to 8+ quantum frameworks
+\item \textbf{High Performance}: Optimized C++ implementation
+\item \textbf{Easy Integration}: Simple command-line interface
+\end{enumerate}
 \end{frame}
 
 \begin{frame}
 \frametitle{Architecture}
 \begin{block}{Conversion Pipeline}
 \begin{enumerate}
-\item Parse graphical model
-\item Convert to MRF (moralization if needed)
-\item Find maximal cliques
-\item Encode as Ising Hamiltonian
-\item Generate framework-specific code
+\item \textbf{Parse}: Read graphical model from input file
+\item \textbf{Moralize}: Convert directed to undirected (if needed)
+\item \textbf{Clique Finding}: Identify maximal cliques
+\item \textbf{MRF Construction}: Build MRF with clique potentials
+\item \textbf{Ising Encoding}: Map MRF to Ising Hamiltonian
+\item \textbf{Quantum Gates}: Translate Hamiltonian to quantum gates
+\item \textbf{Export}: Generate framework-specific code
 \end{enumerate}
 \end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Graph Moralization}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Directed Graph}
+\begin{itemize}
+\item $A \rightarrow B$
+\item $A \rightarrow C$
+\item $B \rightarrow D$
+\item $C \rightarrow D$
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{After Moralization}
+\begin{itemize}
+\item $A - B$ (undirected)
+\item $A - C$ (undirected)
+\item $B - C$ (added edge)
+\item $B - D$ (undirected)
+\item $C - D$ (undirected)
+\end{itemize}
+\end{columns}
+\vspace{1em}
+\textbf{Key Step}: Connect all parents of each node to preserve conditional independence
+\end{frame}
+
+\begin{frame}
+\frametitle{Clique Finding}
+\begin{block}{Maximal Cliques}
+A clique is a subset of nodes where every pair is connected. A maximal clique cannot be extended.
+\end{block}
+\begin{itemize}
+\item \textbf{Algorithm}: Bron-Kerbosch with pivoting
+\item \textbf{Complexity}: Exponential worst-case, but efficient for sparse graphs
+\item \textbf{Output}: Set of all maximal cliques
+\item \textbf{Use}: Define potential functions in MRF
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ising Hamiltonian Encoding}
+\begin{block}{Mapping MRF to Quantum}
+For binary variables, the Ising Hamiltonian is:
+\[
+H = \sum_{i} h_i \sigma_i^z + \sum_{i<j} J_{ij} \sigma_i^z \sigma_j^z
+\]
+\end{block}
+\begin{itemize}
+\item \textbf{Local Fields} $h_i$: From single-node potentials
+\item \textbf{Interactions} $J_{ij}$: From edge/clique potentials
+\item \textbf{Quantum Gates}: RY for local fields, CNOT+RZ for interactions
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quantum Circuit Construction}
+\begin{enumerate}
+\item \textbf{Initialization}: Hadamard gates for superposition
+\[
+H|0\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)
+\]
+\item \textbf{Single-Qubit}: RY gates for local field terms
+\item \textbf{Two-Qubit}: CNOT + RZ for interactions
+\item \textbf{Measurement}: Computational basis measurement
+\end{enumerate}
+\vspace{1em}
+\textbf{Result}: Quantum state whose measurement probabilities match MRF distribution
 \end{frame}
 
 \begin{frame}
@@ -48,35 +183,274 @@
 \begin{columns}
 \column{0.5\textwidth}
 \begin{itemize}
-\item OpenQASM
-\item Qiskit
-\item Cirq
-\item PennyLane
+\item \textbf{OpenQASM 2.0}
+\item \textbf{Qiskit} (IBM)
+\item \textbf{Cirq} (Google)
+\item \textbf{PennyLane} (Xanadu)
 \end{itemize}
 \column{0.5\textwidth}
 \begin{itemize}
-\item Q\#
-\item AWS Braket
-\item Qulacs
-\item TensorFlow Quantum
+\item \textbf{Q\#} (Microsoft)
+\item \textbf{AWS Braket} (Amazon)
+\item \textbf{Qulacs} (Simulator)
+\item \textbf{TensorFlow Quantum}
 \end{itemize}
 \end{columns}
+\vspace{1em}
+\textbf{Benefit}: Write once, run on any framework
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Usage Example}
+\begin{block}{Input File (\texttt{example.txt})}
+\begin{lstlisting}
+TYPE undirected
+NODE 0 A 2
+NODE 1 B 2
+NODE 2 C 2
+EDGE 0 1
+EDGE 1 2
+\end{lstlisting}
+\end{block}
+\begin{block}{Command}
+\begin{lstlisting}
+./mrf_compiler -f qiskit example.txt circuit.py
+\end{lstlisting}
+\end{block}
+\begin{block}{Output}
+Python file with Qiskit \texttt{QuantumCircuit} ready to use
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Generated Qiskit Code}
+\begin{lstlisting}[language=Python]
+from qiskit import QuantumCircuit
+
+def create_circuit():
+    qc = QuantumCircuit(3, 3)
+    # Superposition
+    qc.h(0)
+    qc.h(1)
+    qc.h(2)
+    # Edge (0,1)
+    qc.cx(0, 1)
+    qc.rz(0.5, 1)
+    qc.cx(0, 1)
+    # Edge (1,2)
+    qc.cx(1, 2)
+    qc.rz(0.5, 2)
+    qc.cx(1, 2)
+    return qc
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Export to All Frameworks}
+\begin{block}{Single Command}
+\begin{lstlisting}
+./mrf_compiler -a example.txt
+\end{lstlisting}
+\end{block}
+\begin{itemize}
+\item Generates 8 output files simultaneously
+\item One file per framework
+\item Consistent circuit representation
+\item Easy framework comparison
+\end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Usage Example}
-\begin{block}{Command}
-\texttt{./mrf\_compiler -f qiskit example.txt circuit.py}
+\frametitle{Performance}
+\begin{block}{Scalability}
+\begin{itemize}
+\item \textbf{Small graphs} (2-10 nodes): Instantaneous
+\item \textbf{Medium graphs} (10-50 nodes): Seconds
+\item \textbf{Large graphs} (50-200 nodes): Minutes (depends on structure)
+\end{itemize}
+\end{block}
+\begin{block}{Optimizations}
+\begin{itemize}
+\item Efficient adjacency list representation
+\item Pruned clique finding algorithm
+\item Template-based code generation
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Use Cases}
+\begin{enumerate}
+\item \textbf{Research}: Explore quantum algorithms for probabilistic inference
+\item \textbf{Education}: Learn quantum computing through familiar graphical models
+\item \textbf{Development}: Rapid prototyping of quantum-classical hybrid systems
+\item \textbf{Comparison}: Test same model across different quantum frameworks
+\item \textbf{Integration}: Bridge existing ML pipelines with quantum computing
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Advantages}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Automation}
+\begin{itemize}
+\item No manual encoding
+\item Reduces errors
+\item Saves time
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{Flexibility}
+\begin{itemize}
+\item Multiple frameworks
+\item Easy switching
+\item Framework-agnostic
+\end{itemize}
+\end{columns}
+\vspace{1em}
+\begin{block}{Key Benefit}
+Focus on your problem, not on framework-specific details
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Technical Details}
+\begin{block}{Implementation}
+\begin{itemize}
+\item \textbf{Language}: C++17 for performance
+\item \textbf{Graph Representation}: Adjacency lists
+\item \textbf{Clique Algorithm}: Bron-Kerbosch with pivoting
+\item \textbf{Code Generation}: Template-based exporters
+\end{itemize}
+\end{block}
+\begin{block}{Input Format}
+Simple text-based format, easy to generate programmatically
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Chain Graph}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Graph Structure}
+\begin{itemize}
+\item 3 nodes: A, B, C
+\item 2 edges: A-B, B-C
+\item Undirected graph
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{Result}
+\begin{itemize}
+\item 2 maximal cliques
+\item 3 qubits
+\item 2 CNOT gates
+\item 2 RZ rotations
+\end{itemize}
+\end{columns}
+\vspace{1em}
+\textbf{Quantum Circuit}: Represents pairwise interactions in superposition
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Directed Graph}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Original}
+\begin{itemize}
+\item $A \rightarrow B$
+\item $A \rightarrow C$
+\item V-structure
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{After Moralization}
+\begin{itemize}
+\item $A - B$
+\item $A - C$
+\item $B - C$ (added)
+\item Single clique
+\end{itemize}
+\end{columns}
+\vspace{1em}
+\textbf{Key Point}: Moralization preserves conditional independence
+\end{frame}
+
+\begin{frame}
+\frametitle{Integration Workflow}
+\begin{enumerate}
+\item \textbf{Define Model}: Create input file with graph structure
+\item \textbf{Compile}: Run MRF Compiler
+\item \textbf{Import}: Use generated code in your project
+\item \textbf{Execute}: Run on quantum simulator or hardware
+\item \textbf{Analyze}: Process measurement results
+\end{enumerate}
+\vspace{1em}
+\textbf{Seamless}: Works with existing quantum computing workflows
+\end{frame}
+
+\begin{frame}
+\frametitle{Future Directions}
+\begin{itemize}
+\item \textbf{Extended Input}: Support for custom potential functions
+\item \textbf{Optimization}: Circuit optimization and compilation
+\item \textbf{More Frameworks}: Additional quantum computing platforms
+\item \textbf{Visualization}: Graph and circuit visualization tools
+\item \textbf{GUI}: Graphical user interface
+\item \textbf{Learning}: Automatic potential learning from data
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Getting Started}
+\begin{block}{Installation}
+\begin{lstlisting}
+git clone https://github.com/shyamalchandra/MRFcompiler.git
+cd MRFcompiler
+make
+\end{lstlisting}
+\end{block}
+\begin{block}{Quick Start}
+\begin{lstlisting}
+./mrf_compiler -f qiskit example.txt circuit.py
+\end{lstlisting}
+\end{block}
+\begin{block}{Documentation}
+\begin{itemize}
+\item Research paper (13 pages)
+\item Reference manual (complete API)
+\item Examples and tutorials
+\end{itemize}
 \end{block}
 \end{frame}
 
 \begin{frame}
 \frametitle{Conclusion}
+\begin{block}{Key Takeaways}
 \begin{itemize}
-\item Powerful tool for quantum algorithm development
-\item Easy integration with existing frameworks
-\item Active development and community support
+\item Automated conversion from graphical models to quantum circuits
+\item Support for 8+ major quantum computing frameworks
+\item High-performance C++ implementation
+\item Easy to use command-line interface
+\item Open source and actively developed
 \end{itemize}
+\end{block}
+\vspace{1em}
+\textbf{Impact}: Enables researchers to leverage quantum computing for probabilistic inference without manual circuit design
+\end{frame}
+
+\begin{frame}
+\frametitle{Questions?}
+\begin{center}
+\Large
+\textbf{Thank You!}
+\vspace{2em}
+\normalsize
+\textbf{Resources:}
+\begin{itemize}
+\item GitHub: \url{https://github.com/shyamalchandra/MRFcompiler}
+\item Documentation: Complete reference manual available
+\item Paper: 13-page research paper with details
+\end{itemize}
+\end{center}
 \end{frame}
 
 \end{document}
