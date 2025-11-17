@@ -177,3 +177,5 @@ pip install tensorflow-quantum
 ## License
 
 Copyright (C) 2025, Shyamal Suhana Chandra
+
+For licensing, contact Sapana Micro Software at sapanamicrosoftware@duck.com.

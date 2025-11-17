@@ -581,7 +581,15 @@ function initCanvasEffects() {
     const quantumCanvas = document.getElementById('quantum-canvas');
     if (quantumCanvas) {
         try {
-            new QuantumCanvas('quantum-canvas');
+            // Wait a bit for layout to settle
+            setTimeout(() => {
+                try {
+                    new QuantumCanvas('quantum-canvas');
+                }
+                catch (err) {
+                    console.error('Could not initialize quantum canvas:', err);
+                }
+            }, 100);
         }
         catch (err) {
             console.warn('Could not initialize quantum canvas:', err);
@@ -591,7 +599,15 @@ function initCanvasEffects() {
     const circuitCanvas = document.getElementById('circuit-canvas');
     if (circuitCanvas) {
         try {
-            new QuantumCircuitCanvas('circuit-canvas');
+            // Wait a bit for layout to settle
+            setTimeout(() => {
+                try {
+                    new QuantumCircuitCanvas('circuit-canvas');
+                }
+                catch (err) {
+                    console.error('Could not initialize circuit canvas:', err);
+                }
+            }, 100);
         }
         catch (err) {
             console.warn('Could not initialize circuit canvas:', err);

@@ -177,7 +177,8 @@ void printUsage(const char* program_name) {
 
 int main(int argc, char* argv[]) {
     std::cout << "MRF Compiler - Graphical Model to QPU Circuit Converter\n";
-    std::cout << "Copyright (C) 2025, Shyamal Suhana Chandra\n\n";
+    std::cout << "Copyright (C) 2025, Shyamal Suhana Chandra\n";
+    std::cout << "For licensing, contact Sapana Micro Software at sapanamicrosoftware@duck.com.\n\n";
     
     std::string input_file = "";
     std::string output_file = "";
